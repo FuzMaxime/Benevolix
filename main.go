@@ -13,12 +13,12 @@ import (
 func Routes(configuration *config.Config) *chi.Mux {
 	router := chi.NewRouter()
 	// TODO : replace by valid routes
-	router.Mount("/api/v1/tag", tag.Routes(configuration))
+	router.Mount("/api/v1/tags", tag.Routes(configuration))
 	// router.Mount("/api/v1/visit", visit.Routes(configuration))
 	// router.Mount("/api/v1/cat", cat.Routes(configuration))
 	// router.Mount("/api/v1/treatment", treatment.Routes(configuration))
 	// router.Mount("/api/v1/agecalculator", agecalculator.Routes(configuration))
-	router.Mount("/api/v1/annonce", annonce.Routes(configuration))
+	router.Mount("/api/v1/annonces", annonce.Routes(configuration))
 	return router
 }
 

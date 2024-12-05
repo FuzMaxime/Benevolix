@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi"
 	"github.com/go-chi/render"
 )
 
@@ -22,14 +22,32 @@ func New(configuration *config.Config) *AnnonceConfig {
 func (config *AnnonceConfig) CreateAnnonceHandler(w http.ResponseWriter, r *http.Request) {
 	req := &model.AnnonceRequest{}
 	if err := render.Bind(r, req); err != nil {
+		print(err.Error())
 		render.JSON(w, r, map[string]string{"error": "Invalid Annonce creation request loaded"})
 		return
 	}
+	
+	// Check if tags exist in the database before creating the annonce
+	var tags []dbmodel.TagEntry
+	for _, tagId := range req.Tags {
+		tag, err := config.TagRepository.GetById(tagId)
+		if err != nil {
+			render.JSON(w, r, map[string]string{"error": "Tag not found"})
+			return
+		}
+		tags = append(tags, *tag)
+	}
 
-	AnnonceEntry := &dbmodel.AnnonceEntry{Title: req.Title, Description: req.Description, Date: req.Date, Duration: req.Duration, Address: req.Address, IsRemote: req.IsRemote, /*Tags: req.Tags, Candidature: req.Candidature*/}
+	AnnonceEntry := &dbmodel.AnnonceEntry{Title: req.Title, Description: req.Description, Date: req.Date, Duration: req.Duration, Address: req.Address, IsRemote: req.IsRemote, Tags: tags, /*Candidature: req.Candidature*/}
 	config.AnnonceEntryRepository.Create(AnnonceEntry)
 
-	res := &model.AnnonceResponse{Title: req.Title, Description: req.Description, Date: req.Date, Duration: req.Duration, Address: req.Address, IsRemote: req.IsRemote, /*Tags: req.Tags, Candidature: req.Candidature*/}
+	// Create the tags response
+	var tagsResponse []model.TagResponse
+	for _, tag := range tags {
+		tagsResponse = append(tagsResponse, model.TagResponse{Name: tag.Name})
+	}
+
+	res := &model.AnnonceResponse{Title: req.Title, Description: req.Description, Date: req.Date, Duration: req.Duration, Address: req.Address, IsRemote: req.IsRemote, Tags: tagsResponse, /*Candidature: req.Candidature*/}
 	render.JSON(w, r, res)
 }
 

@@ -15,8 +15,8 @@ type AnnonceEntry struct {
 	Duration    int    `json:"duration"`
 	Address     string    `json:"address"`
 	IsRemote    bool      `json:"is_remote"`
-	Tags        []TagEntry
-	Candidature CandidatureEntry `gorm:"foreignkey:AnnonceId,references:ID"`
+	Tags        []TagEntry `gorm:"many2many:annonce_tags;"`
+	Candidature  CandidatureEntry   `gorm:"foreignKey:AnnonceID;constraint:OnDelete:CASCADE;"`
 }
 
 type AnnonceRepository interface {
