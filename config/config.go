@@ -36,5 +36,4 @@ func New() (*Config, error) {
 	// config.CatEntryRepository = dbmodel.NewCatEntryRepository(databaseSession)
 	config.CandidatureEntryRepository = dbmodel.NewCandidatureRepository(databaseSession)
 	return &config, nil
-
 }
