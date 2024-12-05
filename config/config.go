@@ -9,7 +9,9 @@ import (
 )
 
 type Config struct { // TODO : replace by valid repository
+
 	CandidatureEntryRepository dbmodel.CandidatureRepository
+	TagRepository dbmodel.TagRepository
 }
 
 func New() (*Config, error) {
@@ -26,6 +28,7 @@ func New() (*Config, error) {
 
 	// Initialisation des repositories
 	// TODO : replace by valid repository
+	config.TagRepository = dbmodel.NewTagRepository(databaseSession)
 	// config.VisitEntryRepository = dbmodel.NewVisitEntryRepository(databaseSession)
 	// config.TreatmentEntryRepository = dbmodel.NewTreatmentEntryRepository(databaseSession)
 	// config.CatEntryRepository = dbmodel.NewCatEntryRepository(databaseSession)
