@@ -1,11 +1,11 @@
 package user
 
 import (
+	"benevolix/config"
+	"benevolix/database/dbmodel"
+	"benevolix/pkg/model"
 	"net/http"
 	"strconv"
-	"vet-clinic-api/config"
-	"vet-clinic-api/database/dbmodel"
-	"vet-clinic-api/pkg/model"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
