@@ -12,7 +12,7 @@ type AnnonceEntry struct {
 	Title       string    `json:"title"`
 	Description string    `json:"description"`
 	Date        time.Time `json:"date"`
-	Duration    string    `json:"duration"`
+	Duration    int    `json:"duration"`
 	Address     string    `json:"address"`
 	IsRemote    bool      `json:"is_remote"`
 	Tags        []TagEntry
