@@ -5,8 +5,8 @@ import "gorm.io/gorm"
 type TagEntry struct {
 	gorm.Model
 	Name     string
-	Annonces []AnnonceEntry
-	Users    []UserEntry
+	Annonces []*AnnonceEntry `gorm:"many2many:annonce_tags"`
+	Users    []*UserEntry    `gorm:"many2many:user_tags"`
 }
 
 type TagRepository interface {
