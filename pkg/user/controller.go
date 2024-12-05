@@ -79,7 +79,7 @@ func (config *UserConfig) UpdateUserHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	userEntry, err := config.UserEntryRepository.FindByID(uint(intUserId))
+	userEntry, err := config.UserEntryRepository.GetById(uint(intUserId))
 	if err != nil {
 		render.JSON(w, r, map[string]string{"error": "User not found"})
 		return
@@ -91,10 +91,12 @@ func (config *UserConfig) UpdateUserHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	userEntry.Name = req.Name
-	userEntry.Age = req.Age
-	userEntry.Race = req.Race
-	userEntry.Weight = req.Weight
+	userEntry.LastName = req.LastName
+	userEntry.FirstName = req.FirstName
+	userEntry.Email = req.Email
+	userEntry.Password = req.Password
+	userEntry.City = req.City
+	userEntry.Bio = req.Bio
 
 	updatedUser, err := config.UserEntryRepository.Update(userEntry)
 	if err != nil {
@@ -108,24 +110,19 @@ func (config *UserConfig) UpdateUserHandler(w http.ResponseWriter, r *http.Reque
 func (config *UserConfig) DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
 	userId := chi.URLParam(r, "id")
 
-	entries, err := config.UserEntryRepository.FindAll()
+	intUserId, _ := strconv.Atoi(userId)
+
+	userEntry, err := config.UserEntryRepository.GetById(uint(intUserId))
 	if err != nil {
 		render.JSON(w, r, map[string]string{"error": "Failed to retrieve history"})
 		return
 	}
 
-	intUserId, err := strconv.Atoi(userId)
+	err = config.UserEntryRepository.Delete(int(userEntry.ID))
 	if err != nil {
-		render.JSON(w, r, map[string]string{"error": "Invalid user ID conversion"})
+		render.JSON(w, r, map[string]string{"error": "Failed to delete user"})
 		return
 	}
-	for _, user := range entries {
-		if user.ID == uint(intUserId) {
-			config.UserEntryRepository.Delete(user)
-			render.JSON(w, r, "Oups, we have kill your user!")
-			return
-		}
-	}
 
-	render.JSON(w, r, "User not found")
+	render.JSON(w, r, map[string]string{"message": "User deleted!"})
 }
