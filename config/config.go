@@ -17,7 +17,7 @@ func New() (*Config, error) {
 	config := Config{}
 
 	// Initialisation de la connexion à la base de données
-	databaseSession, err := gorm.Open(sqlite.Open("clinique.db"), &gorm.Config{})
+	databaseSession, err := gorm.Open(sqlite.Open("database/benevolix-database.db"), &gorm.Config{})
 	if err != nil {
 		return &config, err
 	}
