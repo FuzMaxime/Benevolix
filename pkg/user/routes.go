@@ -12,7 +12,7 @@ func Routes(configuration *config.Config) *chi.Mux {
 
 	router.Post("/create-user", userConfig.CreateUserHandler)
 	router.Get("/all-users", userConfig.GetAllUsersHandler)
-	router.Get("/one-user/{id}", userConfig.GetOneUserHandler)
+	router.Get("/one-user/{id}", userConfig.GetByIdUserHandler)
 	router.Put("/update-user/{id}", userConfig.UpdateUserHandler)
 	router.Delete("/delete-user/{id}", userConfig.DeleteUserHandler)
 
