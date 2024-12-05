@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 	"time"
+	"unicode"
 )
 
 type AnnonceRequest struct {
@@ -17,10 +18,34 @@ type AnnonceRequest struct {
 }
 
 func (a *AnnonceRequest) Bind(r *http.Request) error {
-	if a.Title == "" {
+	if a.Title == "" && len(a.Title) < 50 {
 		return errors.New("title must be there")
 	}
-	// TODO : Implement test here
+	for _, r := range a.Title {
+		if !unicode.IsLetter(r) {
+			return errors.New("title must be charactere")
+		}
+	}
+
+	if a.Description == "" && len(a.Description) < 200 {
+		return errors.New("description must be there")
+	}
+
+	now := time.Now()
+	oneYearLater := now.AddDate(1, 0, 0)
+	if a.Date.Before(now) {
+		return errors.New("the date must be after now")
+	} else if a.Date.After(oneYearLater) {
+		return errors.New("the date must be before today + 1 years")
+	}
+
+	if a.Duration == "" {
+		return errors.New("title must be there")
+	}
+
+	if len(a.Tags) > 0 {
+		return errors.New("tag must be there")
+	}
 	return nil
 }
 
