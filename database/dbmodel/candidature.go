@@ -36,10 +36,10 @@ func (s Status) String() string {
 }
 
 type CandidatureRepository interface {
-	Create(entry *AnnonceEntry) (*AnnonceEntry, error)
-	GetAll() ([]*AnnonceEntry, error)
-	GetById(id uint) (*AnnonceEntry, error)
-	Update(entry *AnnonceEntry) (*AnnonceEntry, error)
+	Create(entry *CandidatureEntry) (*CandidatureEntry, error)
+	GetAll() ([]*CandidatureEntry, error)
+	GetById(id uint) (*CandidatureEntry, error)
+	Update(entry *CandidatureEntry) (*CandidatureEntry, error)
 	Delete(id int) error
 }
 
@@ -51,30 +51,30 @@ func NewCandidatureRepository(db *gorm.DB) CandidatureRepository {
 	return &candidatureRepository{db: db}
 }
 
-func (r *candidatureRepository) Create(entry *AnnonceEntry) (*AnnonceEntry, error) {
+func (r *candidatureRepository) Create(entry *CandidatureEntry) (*CandidatureEntry, error) {
 	if err := r.db.Create(entry).Error; err != nil {
 		return nil, err
 	}
 	return entry, nil
 }
 
-func (r *candidatureRepository) GetAll() ([]*AnnonceEntry, error) {
-	var entries []*AnnonceEntry
+func (r *candidatureRepository) GetAll() ([]*CandidatureEntry, error) {
+	var entries []*CandidatureEntry
 	if err := r.db.Find(&entries).Error; err != nil {
 		return nil, err
 	}
 	return entries, nil
 }
 
-func (r *candidatureRepository) GetById(id uint) (*AnnonceEntry, error) {
-	var entrie *AnnonceEntry
+func (r *candidatureRepository) GetById(id uint) (*CandidatureEntry, error) {
+	var entrie *CandidatureEntry
 	if err := r.db.First(&entrie, id).Error; err != nil {
 		return nil, err
 	}
 	return entrie, nil
 }
 
-func (r *candidatureRepository) Update(entry *AnnonceEntry) (*AnnonceEntry, error) {
+func (r *candidatureRepository) Update(entry *CandidatureEntry) (*CandidatureEntry, error) {
 	if err := r.db.Save(&entry).Error; err != nil {
 		return nil, err
 	}
@@ -82,5 +82,5 @@ func (r *candidatureRepository) Update(entry *AnnonceEntry) (*AnnonceEntry, erro
 }
 
 func (r *candidatureRepository) Delete(id int) error {
-	return r.db.Delete(&AnnonceEntry{}, id).Error
+	return r.db.Delete(&CandidatureEntry{}, id).Error
 }
