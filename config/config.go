@@ -9,7 +9,7 @@ import (
 )
 
 type Config struct { // TODO : replace by valid repository
-	// CatEntryRepository       dbmodel.CatEntryRepository
+	AnnonceEntryRepository       dbmodel.AnnonceRepository
 	// VisitEntryRepository     dbmodel.VisitEntryRepository
 	// TreatmentEntryRepository dbmodel.TreatmentEntryRepository
 	TagRepository dbmodel.TagRepository
@@ -32,7 +32,7 @@ func New() (*Config, error) {
 	config.TagRepository = dbmodel.NewTagRepository(databaseSession)
 	// config.VisitEntryRepository = dbmodel.NewVisitEntryRepository(databaseSession)
 	// config.TreatmentEntryRepository = dbmodel.NewTreatmentEntryRepository(databaseSession)
-	// config.CatEntryRepository = dbmodel.NewCatEntryRepository(databaseSession)
+	config.AnnonceEntryRepository = dbmodel.NewAnnonceRepository(databaseSession)
 	return &config, nil
 
 }
