@@ -5,12 +5,11 @@ import (
 	"gorm.io/gorm"
 
 	"benevolix/database"
+	"benevolix/database/dbmodel"
 )
 
-type Config struct { // TODO : replace by valid repository
-	// CatEntryRepository       dbmodel.CatEntryRepository
-	// VisitEntryRepository     dbmodel.VisitEntryRepository
-	// TreatmentEntryRepository dbmodel.TreatmentEntryRepository
+type Config struct {
+	UserEntryRepository dbmodel.UserRepository
 }
 
 func New() (*Config, error) {
@@ -26,9 +25,6 @@ func New() (*Config, error) {
 	database.Migrate(databaseSession)
 
 	// Initialisation des repositories
-	// TODO : replace by valid repository
-	// config.VisitEntryRepository = dbmodel.NewVisitEntryRepository(databaseSession)
-	// config.TreatmentEntryRepository = dbmodel.NewTreatmentEntryRepository(databaseSession)
-	// config.CatEntryRepository = dbmodel.NewCatEntryRepository(databaseSession)
+	config.UserEntryRepository = dbmodel.NewUserRepository(databaseSession)
 	return &config, nil
 }
