@@ -1,6 +1,7 @@
 package dbmodel
 
 import (
+	"benevolix/pkg/model"
 	"time"
 
 	"gorm.io/gorm"
@@ -17,6 +18,23 @@ type AnnonceEntry struct {
 	IsRemote    bool              `json:"is_remote"`
 	Tags        []*TagEntry       `gorm:"many2many:annonce_tags"`
 	Candidature *CandidatureEntry `gorm:"foreignkey:AnnonceID;references:ID"`
+}
+
+func (annonce *AnnonceEntry) ToModel() *model.AnnonceResponse {
+	var tags []model.TagResponse
+	for _, tag := range annonce.Tags {
+		tags = append(tags, *tag.ToModel())
+	}
+	return &model.AnnonceResponse{
+		Title:         annonce.Title,
+		Description:   annonce.Description,
+		Date:          annonce.Date,
+		Duration:      annonce.Duration,
+		Address:       annonce.Address,
+		CandidatureId: annonce.Candidature.ID,
+		IsRemote:      annonce.IsRemote,
+		Tags:          tags,
+	}
 }
 
 type AnnonceRepository interface {
