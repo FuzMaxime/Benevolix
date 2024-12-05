@@ -26,10 +26,25 @@ func (config *UserConfig) CreateUserHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	userEntry := &dbmodel.UserEntry{Name: req.Name, Age: req.Age, Race: req.Race, Weight: req.Weight}
+	userEntry := &dbmodel.UserEntry{
+		LastName:  req.LastName,
+		FirstName: req.FirstName,
+		Email:     req.Email,
+		Password:  req.Password,
+		City:      req.City,
+		Bio:       req.Bio,
+	}
+
 	config.UserEntryRepository.Create(userEntry)
 
-	res := &model.UserResponse{Name: req.Name, Age: req.Age, Race: req.Race, Weight: req.Weight}
+	res := &model.UserResponse{
+		LastName:  req.LastName,
+		FirstName: req.FirstName,
+		Email:     req.Email,
+		Password:  req.Password,
+		City:      req.City,
+		Bio:       req.Bio,
+	}
 	render.JSON(w, r, res)
 }
 
