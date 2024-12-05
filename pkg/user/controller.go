@@ -49,7 +49,7 @@ func (config *UserConfig) CreateUserHandler(w http.ResponseWriter, r *http.Reque
 }
 
 func (config *UserConfig) GetAllUsersHandler(w http.ResponseWriter, r *http.Request) {
-	entries, err := config.UserEntryRepository.FindAll()
+	entries, err := config.UserEntryRepository.GetAll()
 	if err != nil {
 		render.JSON(w, r, map[string]string{"error": "Failed to retrieve history"})
 		return
@@ -57,29 +57,18 @@ func (config *UserConfig) GetAllUsersHandler(w http.ResponseWriter, r *http.Requ
 	render.JSON(w, r, entries)
 }
 
-func (config *UserConfig) GetOneUserHandler(w http.ResponseWriter, r *http.Request) {
+func (config *UserConfig) GetByIdUserHandler(w http.ResponseWriter, r *http.Request) {
 	userId := chi.URLParam(r, "id")
 
-	entries, err := config.UserEntryRepository.FindAll()
-	if err != nil {
-		render.JSON(w, r, map[string]string{"error": "Failed to retrieve history"})
-		return
-	}
-
 	intUserId, _ := strconv.Atoi(userId)
-	var userTarget *dbmodel.UserEntry
 
-	for _, user := range entries {
-		if user.ID == uint(intUserId) {
-			userTarget = user
-		}
-	}
-
-	if userTarget == nil {
-		render.JSON(w, r, map[string]string{"error": "User not found"})
+	entry, err := config.UserEntryRepository.GetById(uint(intUserId))
+	if err != nil {
+		render.JSON(w, r, map[string]string{"error": "Failed to get user by id"})
 		return
 	}
-	render.JSON(w, r, userTarget)
+
+	render.JSON(w, r, entry)
 }
 
 func (config *UserConfig) UpdateUserHandler(w http.ResponseWriter, r *http.Request) {
