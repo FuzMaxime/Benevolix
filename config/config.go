@@ -31,5 +31,4 @@ func New() (*Config, error) {
 	// config.TreatmentEntryRepository = dbmodel.NewTreatmentEntryRepository(databaseSession)
 	// config.CatEntryRepository = dbmodel.NewCatEntryRepository(databaseSession)
 	return &config, nil
-
 }
