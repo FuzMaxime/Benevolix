@@ -21,6 +21,7 @@ type UserRepository interface {
 	GetById(id uint) (*UserEntry, error)
 	Update(entry *UserEntry) (*UserEntry, error)
 	Delete(id int) error
+	GetUserByEmail(email string) (*UserEntry, error)
 }
 
 type userRepository struct {
@@ -63,4 +64,12 @@ func (r *userRepository) Update(entry *UserEntry) (*UserEntry, error) {
 
 func (r *userRepository) Delete(id int) error {
 	return r.db.Delete(&UserEntry{}, id).Error
+}
+
+func (r *userRepository) GetUserByEmail(email string) (*UserEntry, error) {
+	var entries []*UserEntry
+	if err := r.db.Raw("SELECT * FROM user_entries WHERE email = ?;", email).Scan(&entries).Error; err != nil {
+		return nil, err
+	}
+	return entries[0], nil
 }

@@ -1,6 +1,7 @@
 package authentification
 
 import (
+	"benevolix/config"
 	"encoding/json"
 	"net/http"
 
@@ -13,6 +14,12 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		Password string `json:"password"`
 	}
 	json.NewDecoder(r.Body).Decode(&payload)
+
+	// TODO : check if user and password exist in database
+
+	if user, err := config.UserRepository.IsEmailValid(payload.Email); err != nil {
+
+	}
 
 	hashedPassword, exists := users[payload.Email]
 	if !exists || bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(payload.Password)) != nil {
