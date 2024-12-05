@@ -2,6 +2,7 @@ package main
 
 import (
 	"benevolix/config"
+	"benevolix/pkg/annonce"
 	"benevolix/pkg/tag"
 	"log"
 	"net/http"
@@ -17,7 +18,7 @@ func Routes(configuration *config.Config) *chi.Mux {
 	// router.Mount("/api/v1/cat", cat.Routes(configuration))
 	// router.Mount("/api/v1/treatment", treatment.Routes(configuration))
 	// router.Mount("/api/v1/agecalculator", agecalculator.Routes(configuration))
-	// router.Mount("/api/v1/soundidentifier", soundidentifier.Routes(configuration))
+	router.Mount("/api/v1/annonce", annonce.Routes(configuration))
 	return router
 }
 
