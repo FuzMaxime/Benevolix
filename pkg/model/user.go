@@ -8,7 +8,7 @@ import (
 )
 
 type UserRequest struct {
-	Name      string `json:"name"`
+	LastName  string `json:"last_name"`
 	FirstName string `json:"first_name"`
 	Phone     string `json:"phone"`
 	Email     string `json:"email"`
@@ -18,10 +18,25 @@ type UserRequest struct {
 }
 
 func (a *UserRequest) Bind(r *http.Request) error {
-	if a.Name == "" && len(a.Phone) < 40 {
-		return errors.New("name must be there")
+	if a.LastName == "" {
+		return errors.New("lastname must be there")
 	}
-	for _, r := range a.Name {
+	if a.FirstName == "" {
+		return errors.New("firstname must be there")
+	}
+	if a.Email == "" {
+		return errors.New("email must be there")
+	}
+	if a.Password == "" {
+		return errors.New("password must be there")
+	}
+	if a.City == "" {
+		return errors.New("city must be there")
+	}
+	if a.Bio == "" {
+		return errors.New("bio must be there")
+	}
+	for _, r := range a.LastName {
 		if !unicode.IsLetter(r) {
 			return errors.New("name must be charactere")
 		}
@@ -69,7 +84,7 @@ func (a *UserRequest) Bind(r *http.Request) error {
 }
 
 type UserResponse struct {
-	Name      string        `json:"name"`
+	LastName  string        `json:"last_name"`
 	FirstName string        `json:"first_name"`
 	Phone     string        `json:"phone"`
 	Email     string        `json:"email"`
