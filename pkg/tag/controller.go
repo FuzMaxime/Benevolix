@@ -72,7 +72,10 @@ func (config *TagConfig) AddTagHandler(w http.ResponseWriter, r *http.Request) {
 	entries := &dbmodel.TagEntry{
 		Name: req.Name,
 	}
-	config.TagRepository.Create(entries)
+	if _, err := config.TagRepository.Create(entries); err != nil {
+		render.JSON(w, r, map[string]string{"error": "error while create tag | " + err.Error()})
+		return
+	}
 	render.JSON(w, r, entries)
 }
 
