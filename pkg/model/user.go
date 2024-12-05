@@ -8,6 +8,7 @@ import (
 type UserRequest struct {
 	Name      string `json:"name"`
 	FirstName string `json:"first_name"`
+	Phone     string `json:"phone"`
 	Email     string `json:"email"`
 	Password  string `json:"password"`
 	City      string `json:"city"`
@@ -25,6 +26,7 @@ func (a *UserRequest) Bind(r *http.Request) error {
 type UserResponse struct {
 	Name      string        `json:"name"`
 	FirstName string        `json:"first_name"`
+	Phone     string        `json:"phone"`
 	Email     string        `json:"email"`
 	Password  string        `json:"password"`
 	City      string        `json:"city"`
