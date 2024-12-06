@@ -25,22 +25,11 @@ func (config *CandidatureConfig) CreateCandidatureHandler(w http.ResponseWriter,
 		render.JSON(w, r, map[string]string{"error": "Invalid candidature creation request loaded"})
 		return
 	}
-	user, err := config.UserRepository.GetById(uint(req.UserID))
-	if err != nil {
-		render.JSON(w, r, map[string]string{"error": "Invalid userid | user can't be found in databse"})
-		return
-	}
-	annonce, err := config.AnnonceRepository.GetById(uint(req.AnnonceID))
-	if err != nil {
-		render.JSON(w, r, map[string]string{"error": "Invalid annonceId | annonce can't be found in databse"})
-		return
-	}
 
 	candidatureEntry := &dbmodel.CandidatureEntry{UserID: req.UserID, AnnonceID: req.AnnonceID, Date: req.Date, Status: req.Status}
 	config.CandidatureRepository.Create(candidatureEntry)
 
-	res := &model.CandidatureResponse{User: user, Annonce: annonce, Date: req.Date, Status: req.Status}
-	render.JSON(w, r, res)
+	render.JSON(w, r, candidatureEntry.ToModel())
 }
 
 func (config *CandidatureConfig) GetAllCandidaturesHandler(w http.ResponseWriter, r *http.Request) {
@@ -49,7 +38,11 @@ func (config *CandidatureConfig) GetAllCandidaturesHandler(w http.ResponseWriter
 		render.JSON(w, r, map[string]string{"error": "Failed to retrieve history"})
 		return
 	}
-	render.JSON(w, r, entries)
+	var res []model.CandidatureResponse
+	for entry, _ := range entries {
+		res = append(res, entry.ToModel())
+	}
+	render.JSON(w, r, res)
 }
 
 func (config *CandidatureConfig) GetOneCandidatureHandler(w http.ResponseWriter, r *http.Request) {
@@ -66,12 +59,12 @@ func (config *CandidatureConfig) GetOneCandidatureHandler(w http.ResponseWriter,
 		return
 	}
 
-	entries, err := config.CandidatureRepository.GetById(uint(id))
+	candidature, err := config.CandidatureRepository.GetById(uint(id))
 	if err != nil {
 		render.JSON(w, r, map[string]string{"error": "Failed to retrieve history"})
 		return
 	}
-	render.JSON(w, r, entries)
+	render.JSON(w, r, candidature.ToModel())
 }
 
 func (config *CandidatureConfig) UpdateCandidatureHandler(w http.ResponseWriter, r *http.Request) {
@@ -105,7 +98,7 @@ func (config *CandidatureConfig) UpdateCandidatureHandler(w http.ResponseWriter,
 		return
 	}
 
-	render.JSON(w, r, updatedCandidature)
+	render.JSON(w, r, updatedCandidature.ToModel())
 }
 
 func (config *CandidatureConfig) DeleteCandidatureHandler(w http.ResponseWriter, r *http.Request) {

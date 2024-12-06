@@ -41,12 +41,16 @@ func (config *UserConfig) CreateUserHandler(w http.ResponseWriter, r *http.Reque
 }
 
 func (config *UserConfig) GetAllUsersHandler(w http.ResponseWriter, r *http.Request) {
-	entries, err := config.UserRepository.GetAll()
+	users, err := config.UserRepository.GetAll()
 	if err != nil {
 		render.JSON(w, r, map[string]string{"error": "Failed to retrieve history"})
 		return
 	}
-	render.JSON(w, r, entries)
+	var res []model.UserResponse
+	for user, _ := range users {
+		res = append(res, user.ToModel())
+	}
+	render.JSON(w, r, res)
 }
 
 func (config *UserConfig) GetByIdUserHandler(w http.ResponseWriter, r *http.Request) {

@@ -30,7 +30,11 @@ func (config *TagConfig) GetTagsHandler(w http.ResponseWriter, r *http.Request) 
 		render.JSON(w, r, map[string]string{"error": "Failed to retrieve history"})
 		return
 	}
-	render.JSON(w, r, tags)
+	var res []model.TagResponse
+	for tag, _ := range tags {
+		res = append(res, tag.ToModel())
+	}
+	render.JSON(w, r, res)
 }
 
 /*
@@ -50,12 +54,12 @@ func (config *TagConfig) GetTagHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	entries, err := config.TagRepository.GetById(uint(id))
+	tag, err := config.TagRepository.GetById(uint(id))
 	if err != nil {
 		render.JSON(w, r, map[string]string{"error": "Failed to retrieve history"})
 		return
 	}
-	render.JSON(w, r, entries)
+	render.JSON(w, r, tag.ToModel())
 }
 
 // POST
@@ -69,14 +73,14 @@ func (config *TagConfig) AddTagHandler(w http.ResponseWriter, r *http.Request) {
 		render.JSON(w, r, map[string]string{"error": "invalid tag information | " + err.Error()})
 		return
 	}
-	entries := &dbmodel.TagEntry{
+	tag := &dbmodel.TagEntry{
 		Name: req.Name,
 	}
-	if _, err := config.TagRepository.Create(entries); err != nil {
+	if _, err := config.TagRepository.Create(tag); err != nil {
 		render.JSON(w, r, map[string]string{"error": "error while create tag | " + err.Error()})
 		return
 	}
-	render.JSON(w, r, entries)
+	render.JSON(w, r, tag.ToModel())
 }
 
 // PUT
@@ -118,7 +122,7 @@ func (config *TagConfig) UpdateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	render.JSON(w, r, map[string]string{"message": "Tag updated successfully"})
+	render.JSON(w, r, tag.ToModel())
 }
 
 // DELETE
