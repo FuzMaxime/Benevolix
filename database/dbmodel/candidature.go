@@ -17,9 +17,14 @@ type CandidatureEntry struct {
 }
 
 func (candidature *CandidatureEntry) ToModel() *model.CandidatureResponse {
-	user, _ := GetById(candidature.UserID).ToModel()
+	tempConfig, _ := config.New()
+	user, _ := tempConfig.UserRepository.GetById(candidature.UserID).ToModel()
+	annonce, _ := tempConfig.AnnonceRepository.GetById(candidature.AnnonceID).ToModel()
 	return &model.CandidatureResponse{
-		User: user,
+		User:    user,
+		Annonce: annonce,
+		Date:    candidature.Date,
+		Status:  candidature.Status,
 	}
 }
 
