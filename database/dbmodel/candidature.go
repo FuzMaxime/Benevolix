@@ -1,6 +1,8 @@
 package dbmodel
 
 import (
+	"benevolix/config"
+	"benevolix/pkg/model"
 	"time"
 
 	"gorm.io/gorm"
@@ -12,6 +14,18 @@ type CandidatureEntry struct {
 	AnnonceID uint      `json:"annonce_id"`
 	Date      time.Time `json:"date"`
 	Status    string    `json:"status"`
+}
+
+func (candidature *CandidatureEntry) ToModel() *model.CandidatureResponse {
+	tempConfig, _ := config.New()
+	user, _ := tempConfig.UserRepository.GetById(candidature.UserID).ToModel()
+	annonce, _ := tempConfig.AnnonceRepository.GetById(candidature.AnnonceID).ToModel()
+	return &model.CandidatureResponse{
+		User:    user,
+		Annonce: annonce,
+		Date:    candidature.Date,
+		Status:  candidature.Status,
+	}
 }
 
 type CandidatureRepository interface {

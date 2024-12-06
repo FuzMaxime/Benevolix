@@ -3,7 +3,7 @@ package candidature
 import (
 	"benevolix/config"
 
-	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi"
 )
 
 func Routes(configuration *config.Config) *chi.Mux {

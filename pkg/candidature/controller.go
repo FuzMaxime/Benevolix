@@ -25,19 +25,26 @@ func (config *CandidatureConfig) CreateCandidatureHandler(w http.ResponseWriter,
 		render.JSON(w, r, map[string]string{"error": "Invalid candidature creation request loaded"})
 		return
 	}
+	user, err := config.UserRepository.GetById(uint(req.UserID))
+	if err != nil {
+		render.JSON(w, r, map[string]string{"error": "Invalid userid | user can't be found in databse"})
+		return
+	}
+	annonce, err := config.AnnonceRepository.GetById(uint(req.AnnonceID))
+	if err != nil {
+		render.JSON(w, r, map[string]string{"error": "Invalid annonceId | annonce can't be found in databse"})
+		return
+	}
 
 	candidatureEntry := &dbmodel.CandidatureEntry{UserID: req.UserID, AnnonceID: req.AnnonceID, Date: req.Date, Status: req.Status}
-	config.CandidatureEntryRepository.Create(candidatureEntry)
-
-	user := config.UserEntryRepository.GetById(uint(candidatureEntry.UserID))
-	annonce := config.AnnonceEntryRepository.GetById(uint(candidatureEntry.AnnonceID))
+	config.CandidatureRepository.Create(candidatureEntry)
 
 	res := &model.CandidatureResponse{User: user, Annonce: annonce, Date: req.Date, Status: req.Status}
 	render.JSON(w, r, res)
 }
 
 func (config *CandidatureConfig) GetAllCandidaturesHandler(w http.ResponseWriter, r *http.Request) {
-	entries, err := config.CandidatureEntryRepository.GetAll()
+	entries, err := config.CandidatureRepository.GetAll()
 	if err != nil {
 		render.JSON(w, r, map[string]string{"error": "Failed to retrieve history"})
 		return
@@ -59,7 +66,7 @@ func (config *CandidatureConfig) GetOneCandidatureHandler(w http.ResponseWriter,
 		return
 	}
 
-	entries, err := config.CandidatureEntryRepository.GetById(uint(id))
+	entries, err := config.CandidatureRepository.GetById(uint(id))
 	if err != nil {
 		render.JSON(w, r, map[string]string{"error": "Failed to retrieve history"})
 		return
@@ -75,7 +82,7 @@ func (config *CandidatureConfig) UpdateCandidatureHandler(w http.ResponseWriter,
 		return
 	}
 
-	candidatureEntry, err := config.CandidatureEntryRepository.GetById(uint(intcandidatureId))
+	candidatureEntry, err := config.CandidatureRepository.GetById(uint(intcandidatureId))
 	if err != nil {
 		render.JSON(w, r, map[string]string{"error": "Candidature not found"})
 		return
@@ -92,7 +99,7 @@ func (config *CandidatureConfig) UpdateCandidatureHandler(w http.ResponseWriter,
 	candidatureEntry.Date = req.Date
 	candidatureEntry.Status = req.Status
 
-	updatedCandidature, err := config.CandidatureEntryRepository.Update(candidatureEntry)
+	updatedCandidature, err := config.CandidatureRepository.Update(candidatureEntry)
 	if err != nil {
 		render.JSON(w, r, map[string]string{"error": "Failed to update candidature"})
 		return
@@ -104,7 +111,7 @@ func (config *CandidatureConfig) UpdateCandidatureHandler(w http.ResponseWriter,
 func (config *CandidatureConfig) DeleteCandidatureHandler(w http.ResponseWriter, r *http.Request) {
 	candidatureId := chi.URLParam(r, "id")
 
-	entries, err := config.CandidatureEntryRepository.GetAll()
+	entries, err := config.CandidatureRepository.GetAll()
 	if err != nil {
 		render.JSON(w, r, map[string]string{"error": "Failed to retrieve history"})
 		return
@@ -117,7 +124,7 @@ func (config *CandidatureConfig) DeleteCandidatureHandler(w http.ResponseWriter,
 	}
 	for _, candidature := range entries {
 		if candidature.ID == uint(intcandidatureId) {
-			config.CandidatureEntryRepository.Delete(intcandidatureId)
+			config.CandidatureRepository.Delete(intcandidatureId)
 			render.JSON(w, r, "Your candidature is delete")
 			return
 		}

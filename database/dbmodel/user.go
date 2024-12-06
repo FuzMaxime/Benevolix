@@ -1,10 +1,14 @@
 package dbmodel
 
-import "gorm.io/gorm"
+import (
+	"benevolix/pkg/model"
+
+	"gorm.io/gorm"
+)
 
 type UserEntry struct {
 	gorm.Model
-	Name        string            `json:"name"`
+	LastName    string            `json:"last_name"`
 	FirstName   string            `json:"first_name"`
 	Phone       string            `json:"phone"`
 	Email       string            `json:"email"`
@@ -13,6 +17,23 @@ type UserEntry struct {
 	Bio         string            `json:"bio"`
 	Tags        []*TagEntry       `gorm:"many2many:user_tags"`
 	Candidature *CandidatureEntry `gorm:"foreignkey:UserID;references:ID"`
+}
+
+func (user *UserEntry) ToModel() *model.UserResponse {
+	var tags []model.TagResponse
+	for _, tag := range user.Tags {
+		tags = append(tags, *tag.ToModel())
+	}
+	return &model.UserResponse{
+		LastName:  user.LastName,
+		FirstName: user.FirstName,
+		Email:     user.Email,
+		Password:  user.Password,
+		Phone:     user.Phone,
+		City:      user.City,
+		Bio:       user.Bio,
+		Tags:      tags,
+	}
 }
 
 type UserRepository interface {
