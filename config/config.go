@@ -10,9 +10,9 @@ import (
 
 type Config struct { // TODO : replace by valid repository
 	AnnonceEntryRepository       dbmodel.AnnonceRepository
-	// VisitEntryRepository     dbmodel.VisitEntryRepository
-	// TreatmentEntryRepository dbmodel.TreatmentEntryRepository
-	TagRepository dbmodel.TagRepository
+	CandidatureRepository dbmodel.CandidatureRepository
+	TagRepository         dbmodel.TagRepository
+	UserRepository        dbmodel.UserRepository
 }
 
 func New() (*Config, error) {
@@ -28,11 +28,9 @@ func New() (*Config, error) {
 	database.Migrate(databaseSession)
 
 	// Initialisation des repositories
-	// TODO : replace by valid repository
 	config.TagRepository = dbmodel.NewTagRepository(databaseSession)
-	// config.VisitEntryRepository = dbmodel.NewVisitEntryRepository(databaseSession)
-	// config.TreatmentEntryRepository = dbmodel.NewTreatmentEntryRepository(databaseSession)
 	config.AnnonceEntryRepository = dbmodel.NewAnnonceRepository(databaseSession)
+	config.UserRepository = dbmodel.NewUserRepository(databaseSession)
+	config.CandidatureRepository = dbmodel.NewCandidatureRepository(databaseSession)
 	return &config, nil
-
 }

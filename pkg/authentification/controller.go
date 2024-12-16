@@ -14,6 +14,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 	json.NewDecoder(r.Body).Decode(&payload)
 
+	// TODO : check if user and password exist in database
+
 	hashedPassword, exists := users[payload.Email]
 	if !exists || bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(payload.Password)) != nil {
 		http.Error(w, "Invalid email or password", http.StatusUnauthorized)

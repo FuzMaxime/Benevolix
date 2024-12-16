@@ -1,10 +1,14 @@
 package dbmodel
 
-import "gorm.io/gorm"
+import (
+	"benevolix/pkg/model"
+
+	"gorm.io/gorm"
+)
 
 type UserEntry struct {
 	gorm.Model
-	Name        string            `json:"name"`
+	LastName    string            `json:"last_name"`
 	FirstName   string            `json:"first_name"`
 	Phone       string            `json:"phone"`
 	Email       string            `json:"email"`
@@ -15,12 +19,30 @@ type UserEntry struct {
 	Candidature *CandidatureEntry `gorm:"foreignkey:UserID;references:ID"`
 }
 
+func (user *UserEntry) ToModel() *model.UserResponse {
+	var tags []model.TagResponse
+	for _, tag := range user.Tags {
+		tags = append(tags, *tag.ToModel())
+	}
+	return &model.UserResponse{
+		LastName:  user.LastName,
+		FirstName: user.FirstName,
+		Email:     user.Email,
+		Password:  user.Password,
+		Phone:     user.Phone,
+		City:      user.City,
+		Bio:       user.Bio,
+		Tags:      tags,
+	}
+}
+
 type UserRepository interface {
 	Create(entry *UserEntry) (*UserEntry, error)
 	GetAll() ([]*UserEntry, error)
 	GetById(id uint) (*UserEntry, error)
 	Update(entry *UserEntry) (*UserEntry, error)
 	Delete(id int) error
+	GetUserByEmail(email string) (*UserEntry, error)
 }
 
 type userRepository struct {
@@ -63,4 +85,12 @@ func (r *userRepository) Update(entry *UserEntry) (*UserEntry, error) {
 
 func (r *userRepository) Delete(id int) error {
 	return r.db.Delete(&UserEntry{}, id).Error
+}
+
+func (r *userRepository) GetUserByEmail(email string) (*UserEntry, error) {
+	var entries []*UserEntry
+	if err := r.db.Raw("SELECT * FROM user_entries WHERE email = ?;", email).Scan(&entries).Error; err != nil {
+		return nil, err
+	}
+	return entries[0], nil
 }

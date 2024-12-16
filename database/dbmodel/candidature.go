@@ -1,6 +1,8 @@
 package dbmodel
 
 import (
+	"benevolix/config"
+	"benevolix/pkg/model"
 	"time"
 
 	"gorm.io/gorm"
@@ -11,27 +13,18 @@ type CandidatureEntry struct {
 	UserID    uint      `json:"user_id"`
 	AnnonceID uint      `json:"annonce_id"`
 	Date      time.Time `json:"date"`
-	Status    Status    `json:"status"`
+	Status    string    `json:"status"`
 }
 
-type Status int
-
-const (
-	Waiting Status = iota
-	Refused
-	Accepted
-)
-
-func (s Status) String() string {
-	switch s {
-	case Waiting:
-		return "Waiting"
-	case Refused:
-		return "Refused"
-	case Accepted:
-		return "Accepted"
-	default:
-		return "Unknown"
+func (candidature *CandidatureEntry) ToModel() *model.CandidatureResponse {
+	tempConfig, _ := config.New()
+	user, _ := tempConfig.UserRepository.GetById(candidature.UserID).ToModel()
+	annonce, _ := tempConfig.AnnonceRepository.GetById(candidature.AnnonceID).ToModel()
+	return &model.CandidatureResponse{
+		User:    user,
+		Annonce: annonce,
+		Date:    candidature.Date,
+		Status:  candidature.Status,
 	}
 }
 

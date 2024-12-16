@@ -1,12 +1,22 @@
 package dbmodel
 
-import "gorm.io/gorm"
+import (
+	"benevolix/pkg/model"
+
+	"gorm.io/gorm"
+)
 
 type TagEntry struct {
 	gorm.Model
 	Name     string
 	Annonces []*AnnonceEntry `gorm:"many2many:annonce_tags"`
 	Users    []*UserEntry    `gorm:"many2many:user_tags"`
+}
+
+func (tag *TagEntry) ToModel() *model.TagResponse {
+	return &model.TagResponse{
+		Name: tag.Name,
+	}
 }
 
 type TagRepository interface {
