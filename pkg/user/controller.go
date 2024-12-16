@@ -47,8 +47,8 @@ func (config *UserConfig) GetAllUsersHandler(w http.ResponseWriter, r *http.Requ
 		return
 	}
 	var res []model.UserResponse
-	for user, _ := range users {
-		res = append(res, user.ToModel())
+	for _, user := range users {
+		res = append(res, *user.ToModel())
 	}
 	render.JSON(w, r, res)
 }

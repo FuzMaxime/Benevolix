@@ -39,8 +39,8 @@ func (config *CandidatureConfig) GetAllCandidaturesHandler(w http.ResponseWriter
 		return
 	}
 	var res []model.CandidatureResponse
-	for entry, _ := range entries {
-		res = append(res, entry.ToModel())
+	for _, entry := range entries {
+		res = append(res, *entry.ToModel())
 	}
 	render.JSON(w, r, res)
 }

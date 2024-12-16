@@ -31,8 +31,8 @@ func (config *TagConfig) GetTagsHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	var res []model.TagResponse
-	for tag, _ := range tags {
-		res = append(res, tag.ToModel())
+	for _, tag := range tags {
+		res = append(res, *tag.ToModel())
 	}
 	render.JSON(w, r, res)
 }

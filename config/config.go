@@ -8,10 +8,11 @@ import (
 	"benevolix/database/dbmodel"
 )
 
-type Config struct {
-	CandidatureRepository dbmodel.CandidatureRepository
-	TagRepository         dbmodel.TagRepository
-	UserRepository        dbmodel.UserRepository
+type Config struct { // TODO : replace by valid repository
+	AnnonceEntryRepository dbmodel.AnnonceRepository
+	CandidatureRepository  dbmodel.CandidatureRepository
+	TagRepository          dbmodel.TagRepository
+	UserRepository         dbmodel.UserRepository
 }
 
 func New() (*Config, error) {
@@ -28,6 +29,7 @@ func New() (*Config, error) {
 
 	// Initialisation des repositories
 	config.TagRepository = dbmodel.NewTagRepository(databaseSession)
+	config.AnnonceEntryRepository = dbmodel.NewAnnonceRepository(databaseSession)
 	config.UserRepository = dbmodel.NewUserRepository(databaseSession)
 	config.CandidatureRepository = dbmodel.NewCandidatureRepository(databaseSession)
 	return &config, nil
