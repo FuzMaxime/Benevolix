@@ -9,10 +9,10 @@ import (
 )
 
 type Config struct { // TODO : replace by valid repository
-	AnnonceEntryRepository       dbmodel.AnnonceRepository
-	CandidatureRepository dbmodel.CandidatureRepository
-	TagRepository         dbmodel.TagRepository
-	UserRepository        dbmodel.UserRepository
+	AnnonceEntryRepository dbmodel.AnnonceRepository
+	CandidatureRepository  dbmodel.CandidatureRepository
+	TagRepository          dbmodel.TagRepository
+	UserRepository         dbmodel.UserRepository
 }
 
 func New() (*Config, error) {

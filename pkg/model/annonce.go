@@ -11,7 +11,7 @@ type AnnonceRequest struct {
 	Title       string    `json:"title"`
 	Description string    `json:"description"`
 	Date        time.Time `json:"date"`
-	Duration    int    `json:"duration"`
+	Duration    int       `json:"duration"`
 	Address     string    `json:"address"`
 	IsRemote    bool      `json:"is_remote"`
 	Tags        []uint    `json:"tags"`
@@ -39,8 +39,8 @@ func (a *AnnonceRequest) Bind(r *http.Request) error {
 		return errors.New("the date must be before today + 1 years")
 	}
 
-	if a.Duration == "" {
-		return errors.New("title must be there")
+	if a.Duration < 0 {
+		return errors.New("duration must be there")
 	}
 
 	if len(a.Tags) > 0 {
@@ -53,7 +53,7 @@ type AnnonceResponse struct {
 	Title         string    `json:"title"`
 	Description   string    `json:"description"`
 	Date          time.Time `json:"date"`
-	Duration      int    `json:"duration"`
+	Duration      int       `json:"duration"`
 	Address       string    `json:"address"`
 	CandidatureId uint      `json:"candidature_id"`
 	IsRemote      bool      `json:"is_remote"`

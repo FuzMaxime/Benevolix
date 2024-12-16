@@ -15,8 +15,6 @@ func Migrate(db *gorm.DB) {
 		&dbmodel.AnnonceEntry{},
 		&dbmodel.CandidatureEntry{},
 		&dbmodel.UserEntry{},
-	// &dbmodel.VisitEntry{},
-	// &dbmodel.TreatmentEntry{},
 	)
 	log.Println("Database migrated successfully")
 }

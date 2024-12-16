@@ -1,7 +1,6 @@
 package dbmodel
 
 import (
-	"benevolix/config"
 	"benevolix/pkg/model"
 	"time"
 
@@ -17,12 +16,18 @@ type CandidatureEntry struct {
 }
 
 func (candidature *CandidatureEntry) ToModel() *model.CandidatureResponse {
-	tempConfig, _ := config.New()
-	user, _ := tempConfig.UserRepository.GetById(candidature.UserID).ToModel()
-	annonce, _ := tempConfig.AnnonceRepository.GetById(candidature.AnnonceID).ToModel()
+	var r *candidatureRepository
+
+	var userEntrie *UserEntry
+	if err := r.db.First(&userEntrie, candidature.UserID).Error; err != nil {
+	}
+
+	var annonceEntrie *AnnonceEntry
+	if err := r.db.First(&annonceEntrie, candidature.AnnonceID).Error; err != nil {
+	}
 	return &model.CandidatureResponse{
-		User:    user,
-		Annonce: annonce,
+		User:    *userEntrie.ToModel(),
+		Annonce: *annonceEntrie.ToModel(),
 		Date:    candidature.Date,
 		Status:  candidature.Status,
 	}
