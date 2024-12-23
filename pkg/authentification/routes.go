@@ -4,6 +4,7 @@ import (
 	"benevolix/config"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/go-chi/chi"
 )
@@ -11,7 +12,7 @@ import (
 func Routes(configuration *config.Config) *chi.Mux {
 	authConfig := New(configuration)
 	router := chi.NewRouter()
-	router.Use(AuthMiddleware("your_secret_key"))
+	router.Use(AuthMiddleware(os.Getenv("API_KEY")))
 	router.Post("/login", authConfig.Login)
 	router.Get("/protected", func(w http.ResponseWriter, r *http.Request) {
 		user := GetUserFromContext(r.Context())
