@@ -3,6 +3,7 @@ package main
 import (
 	"benevolix/config"
 	"benevolix/pkg/annonce"
+	"benevolix/pkg/authentification"
 	"benevolix/pkg/tag"
 	"benevolix/pkg/user"
 	"log"
@@ -14,7 +15,8 @@ import (
 func Routes(configuration *config.Config) *chi.Mux {
 	router := chi.NewRouter()
 
-	router.Mount("/api/v1/auth", tag.Routes(configuration))
+	router.Mount("/api/v1/auth", authentification.Routes(configuration))
+	// protected routes
 	router.Mount("/api/v1/tags", tag.Routes(configuration))
 	router.Mount("/api/v1/annonces", annonce.Routes(configuration))
 	router.Mount("/api/v1/users", user.Routes(configuration))

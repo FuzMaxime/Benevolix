@@ -26,6 +26,10 @@ func (config *LoginConfig) Login(w http.ResponseWriter, r *http.Request) {
 	user, exist := config.UserRepository.GetUserByEmail(payload.Email)
 
 	if exist != nil || bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(payload.Password)) != nil {
+		print(payload.Email)
+		print(payload.Password)
+		print(bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(payload.Password)))
+		print(exist)
 		http.Error(w, "Invalid email or password", http.StatusUnauthorized)
 		return
 	}

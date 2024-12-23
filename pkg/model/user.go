@@ -42,9 +42,6 @@ func (a *UserRequest) Bind(r *http.Request) error {
 		}
 	}
 
-	if a.FirstName == "" && len(a.Phone) < 40 {
-		return errors.New("firstname must be there")
-	}
 	for _, r := range a.FirstName {
 		if !unicode.IsLetter(r) {
 			return errors.New("firstname must be charactere")

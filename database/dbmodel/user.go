@@ -3,6 +3,7 @@ package dbmodel
 import (
 	"benevolix/pkg/model"
 
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -54,6 +55,11 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 }
 
 func (r *userRepository) Create(entry *UserEntry) (*UserEntry, error) {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(entry.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return nil, err
+	}
+	entry.Password = string(hashedPassword)
 	if err := r.db.Create(entry).Error; err != nil {
 		return nil, err
 	}
