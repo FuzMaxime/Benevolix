@@ -15,6 +15,7 @@ type TagEntry struct {
 
 func (tag *TagEntry) ToModel() *model.TagResponse {
 	return &model.TagResponse{
+		ID:   tag.ID,
 		Name: tag.Name,
 	}
 }

@@ -26,7 +26,7 @@ func (config *AnnonceConfig) CreateAnnonceHandler(w http.ResponseWriter, r *http
 		render.JSON(w, r, map[string]string{"error": "Invalid Annonce creation request loaded"})
 		return
 	}
-	
+
 	// Check if tags exist in the database before creating the annonce
 	var tags []dbmodel.TagEntry
 	for _, tagId := range req.Tags {
@@ -38,7 +38,7 @@ func (config *AnnonceConfig) CreateAnnonceHandler(w http.ResponseWriter, r *http
 		tags = append(tags, *tag)
 	}
 
-	AnnonceEntry := &dbmodel.AnnonceEntry{Title: req.Title, Description: req.Description, Date: req.Date, Duration: req.Duration, Address: req.Address, IsRemote: req.IsRemote, Tags: tags, /*Candidature: req.Candidature*/}
+	AnnonceEntry := &dbmodel.AnnonceEntry{Title: req.Title, Description: req.Description, Date: req.Date, Duration: req.Duration, Address: req.Address, IsRemote: req.IsRemote, Tags: tags /*Candidature: req.Candidature*/}
 	config.AnnonceEntryRepository.Create(AnnonceEntry)
 
 	// Create the tags response
@@ -47,7 +47,7 @@ func (config *AnnonceConfig) CreateAnnonceHandler(w http.ResponseWriter, r *http
 		tagsResponse = append(tagsResponse, model.TagResponse{Name: tag.Name})
 	}
 
-	res := &model.AnnonceResponse{Title: req.Title, Description: req.Description, Date: req.Date, Duration: req.Duration, Address: req.Address, IsRemote: req.IsRemote, Tags: tagsResponse, /*Candidature: req.Candidature*/}
+	res := &model.AnnonceResponse{Title: req.Title, Description: req.Description, Date: req.Date, Duration: req.Duration, Address: req.Address, IsRemote: req.IsRemote, Tags: tagsResponse /*Candidature: req.Candidature*/}
 	render.JSON(w, r, res)
 }
 
@@ -57,7 +57,12 @@ func (config *AnnonceConfig) GetAllAnnoncesHandler(w http.ResponseWriter, r *htt
 		render.JSON(w, r, map[string]string{"error": "Failed to retrieve history"})
 		return
 	}
-	render.JSON(w, r, entries)
+	var annoncesResponse []model.AnnonceResponse
+	for _, annonce := range entries {
+		annoncesResponse = append(annoncesResponse, *annonce.ToModel())
+	}
+
+	render.JSON(w, r, annoncesResponse)
 }
 
 func (config *AnnonceConfig) GetOneAnnonceHandler(w http.ResponseWriter, r *http.Request) {

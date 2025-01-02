@@ -4,7 +4,6 @@ import (
 	"errors"
 	"net/http"
 	"time"
-	"unicode"
 )
 
 type AnnonceRequest struct {
@@ -20,11 +19,6 @@ type AnnonceRequest struct {
 func (a *AnnonceRequest) Bind(r *http.Request) error {
 	if a.Title == "" && len(a.Title) < 50 {
 		return errors.New("title must be there")
-	}
-	for _, r := range a.Title {
-		if !unicode.IsLetter(r) {
-			return errors.New("title must be charactere")
-		}
 	}
 
 	if a.Description == "" && len(a.Description) < 200 {
@@ -43,20 +37,21 @@ func (a *AnnonceRequest) Bind(r *http.Request) error {
 		return errors.New("duration must be there")
 	}
 
-	if len(a.Tags) > 0 {
-		return errors.New("tag must be there")
+	if len(a.Tags) == 0 {
+		return errors.New("at least one tag must be provided")
 	}
 	return nil
 }
 
 type AnnonceResponse struct {
-	Title         string    `json:"title"`
-	Description   string    `json:"description"`
-	Date          time.Time `json:"date"`
-	Duration      int       `json:"duration"`
-	Address       string    `json:"address"`
-	CandidatureId uint      `json:"candidature_id"`
-	IsRemote      bool      `json:"is_remote"`
+	ID          uint      `json:"id"`
+	Title       string    `json:"title"`
+	Description string    `json:"description"`
+	Date        time.Time `json:"date"`
+	Duration    int       `json:"duration"`
+	Address     string    `json:"address"`
+	IsRemote    bool      `json:"is_remote"`
 
-	Tags []TagResponse `json:"tags"`
+	Tags         []TagResponse         `json:"tags"`
+	Candidatures []CandidatureResponse `json:"candidatures"`
 }
