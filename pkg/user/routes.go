@@ -16,12 +16,12 @@ func Routes(configuration *config.Config) *chi.Mux {
 
 	router.Route("/", func(r chi.Router) {
 		r.Use(authentification.AuthMiddleware(os.Getenv("API_Key")))
-		router.Get("/", userConfig.GetAllUsersHandler)
-		router.Get("/{id}", userConfig.GetByIdUserHandler)
+		r.Get("/", userConfig.GetAllUsersHandler)
+		r.Get("/{id}", userConfig.GetByIdUserHandler)
 
-		router.Put("/{id}", userConfig.UpdateUserHandler)
+		r.Put("/{id}", userConfig.UpdateUserHandler)
 
-		router.Delete("/{id}", userConfig.DeleteUserHandler)
+		r.Delete("/{id}", userConfig.DeleteUserHandler)
 
 	})
 

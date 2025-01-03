@@ -14,11 +14,11 @@ func Routes(configuration *config.Config) *chi.Mux {
 	router.Route("/api/v1", func(r chi.Router) {
 		r.Use(authentification.AuthMiddleware(os.Getenv("API_Key")))
 
-		router.Post("/candidature", CandidatureConfig.CreateCandidatureHandler)
-		router.Get("/candidature", CandidatureConfig.GetAllCandidaturesHandler)
-		router.Get("/candidature/{id}", CandidatureConfig.GetOneCandidatureHandler)
-		router.Put("/candidature/{id}", CandidatureConfig.UpdateCandidatureHandler)
-		router.Delete("/candidature/{id}", CandidatureConfig.DeleteCandidatureHandler)
+		r.Post("/candidature", CandidatureConfig.CreateCandidatureHandler)
+		r.Get("/candidature", CandidatureConfig.GetAllCandidaturesHandler)
+		r.Get("/candidature/{id}", CandidatureConfig.GetOneCandidatureHandler)
+		r.Put("/candidature/{id}", CandidatureConfig.UpdateCandidatureHandler)
+		r.Delete("/candidature/{id}", CandidatureConfig.DeleteCandidatureHandler)
 	})
 
 	return router
