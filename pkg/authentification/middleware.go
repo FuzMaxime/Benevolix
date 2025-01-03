@@ -30,7 +30,7 @@ func AuthMiddleware(secret string) func(http.Handler) http.Handler {
 }
 
 func GetUserFromContext(ctx context.Context) string {
-	email, ok := ctx.Value("email").(string)
+	email, ok := ctx.Value(emailContextKey).(string)
 	if !ok {
 		return ""
 	}

@@ -11,7 +11,7 @@ import (
 func Routes(configuration *config.Config) *chi.Mux {
 	annonceConfig := New(configuration)
 	router := chi.NewRouter()
-	router.Route("/api/v1", func(r chi.Router) {
+	router.Route("/", func(r chi.Router) {
 		r.Use(authentification.AuthMiddleware(os.Getenv("API_Key")))
 
 		r.Post("/", annonceConfig.CreateAnnonceHandler)

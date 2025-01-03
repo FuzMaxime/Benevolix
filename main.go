@@ -4,12 +4,14 @@ import (
 	"benevolix/config"
 	"benevolix/pkg/annonce"
 	"benevolix/pkg/authentification"
+	"benevolix/pkg/candidature"
 	"benevolix/pkg/tag"
 	"benevolix/pkg/user"
 	"log"
 	"net/http"
 
 	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 )
 
 func Routes(configuration *config.Config) *chi.Mux {
@@ -19,7 +21,10 @@ func Routes(configuration *config.Config) *chi.Mux {
 	// protected routes
 	router.Mount("/api/v1/tags", tag.Routes(configuration))
 	router.Mount("/api/v1/annonces", annonce.Routes(configuration))
+	router.Mount("/api/v1/candidatures", candidature.Routes(configuration))
 	router.Mount("/api/v1/users", user.Routes(configuration))
+
+	router.Use(middleware.Logger)
 	return router
 }
 
