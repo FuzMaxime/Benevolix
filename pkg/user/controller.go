@@ -37,7 +37,11 @@ func (config *UserConfig) CreateUserHandler(w http.ResponseWriter, r *http.Reque
 		Bio:       req.Bio,
 	}
 
-	config.UserRepository.Create(userEntry)
+	if _, err := config.UserRepository.Create(userEntry); err != nil {
+		render.JSON(w, r, map[string]string{"error": "User already registered"})
+		print(err.Error())
+		return
+	}
 	render.JSON(w, r, userEntry.ToModel())
 }
 

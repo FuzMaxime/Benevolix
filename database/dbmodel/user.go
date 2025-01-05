@@ -12,8 +12,8 @@ type UserEntry struct {
 	gorm.Model
 	LastName    string            `json:"last_name"`
 	FirstName   string            `json:"first_name"`
-	Phone       string            `json:"phone"`
-	Email       string            `json:"email"`
+	Phone       string            `json:"phone" gorm:"uniqueIndex"`
+	Email       string            `json:"email" gorm:"uniqueIndex"`
 	Password    string            `json:"password"`
 	City        string            `json:"city"`
 	Bio         string            `json:"bio"`
