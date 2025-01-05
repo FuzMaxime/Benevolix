@@ -8,7 +8,7 @@ import (
 )
 
 type AnnonceEntry struct {
-	gorm.Model
+	gorm.Model `swaggerignore:"true"` // Ignore gorm.Model pour Swagger
 
 	Title       string             `json:"title"`
 	Description string             `json:"description"`

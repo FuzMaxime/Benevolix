@@ -7,6 +7,8 @@ import (
 	"os"
 
 	"golang.org/x/crypto/bcrypt"
+
+	_ "benevolix/docs" // Importez les fichiers de documentation générés
 )
 
 type LoginConfig struct {
@@ -17,12 +19,24 @@ func New(configuration *config.Config) *LoginConfig {
 	return &LoginConfig{configuration}
 }
 
+// LoginPayload représente le payload pour la connexion
+type LoginPayload struct {
+    Email    string `json:"email"`
+    Password string `json:"password"`
+}
+
+// @Summary Connexion de l'utilisateur
+// @Description Permet à un utilisateur de se connecter avec ses identifiants.
+// @Tags Authentification
+// @Accept json
+// @Produce json
+// @Param payload body LoginPayload true "Login payload"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Router /login [post]
 func (config *LoginConfig) Login(w http.ResponseWriter, r *http.Request) {
-	print("test")
-	var payload struct {
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}
+	var payload LoginPayload
+	
 	json.NewDecoder(r.Body).Decode(&payload)
 	user, exist := config.UserRepository.GetUserByEmail(payload.Email)
 

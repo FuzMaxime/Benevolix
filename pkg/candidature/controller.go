@@ -9,6 +9,8 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/render"
+
+	_ "benevolix/docs" // Importez les fichiers de documentation générés
 )
 
 type CandidatureConfig struct {
@@ -19,6 +21,16 @@ func New(configuration *config.Config) *CandidatureConfig {
 	return &CandidatureConfig{configuration}
 }
 
+// CreateCandidatureHandler gère la création d'une candidature
+// @Summary Créer une candidature
+// @Description Permet de créer une nouvelle candidature
+// @Tags Candidature
+// @Accept json
+// @Produce json
+// @Param candidature body model.CandidatureRequest true "Candidature request"
+// @Success 200 {object} dbmodel.CandidatureEntry
+// @Failure 400 {object} map[string]string
+// @Router /candidature [post]
 func (config *CandidatureConfig) CreateCandidatureHandler(w http.ResponseWriter, r *http.Request) {
 	req := &model.CandidatureRequest{}
 	if err := render.Bind(r, req); err != nil {
@@ -32,6 +44,14 @@ func (config *CandidatureConfig) CreateCandidatureHandler(w http.ResponseWriter,
 	render.JSON(w, r, candidatureEntry.ToModel())
 }
 
+// GetAllCandidaturesHandler gère la récupération de toutes les candidatures
+// @Summary Récupérer toutes les candidatures
+// @Description Permet de récupérer toutes les candidatures
+// @Tags Candidature
+// @Produce json
+// @Success 200 {array} dbmodel.CandidatureEntry
+// @Failure 500 {object} map[string]string
+// @Router /candidatures [get]
 func (config *CandidatureConfig) GetAllCandidaturesHandler(w http.ResponseWriter, r *http.Request) {
 	entries, err := config.CandidatureRepository.GetAll()
 	if err != nil {
@@ -45,6 +65,15 @@ func (config *CandidatureConfig) GetAllCandidaturesHandler(w http.ResponseWriter
 	render.JSON(w, r, res)
 }
 
+// GetOneCandidatureHandler gère la récupération d'une candidature par son ID
+// @Summary Récupérer une candidature par son ID
+// @Description Permet de récupérer une candidature par son ID
+// @Tags Candidature
+// @Produce json
+// @Param id path int true "Candidature ID"
+// @Success 200 {object} dbmodel.CandidatureEntry
+// @Failure 400 {object} map[string]string
+// @Router /candidatures/{id} [get]
 func (config *CandidatureConfig) GetOneCandidatureHandler(w http.ResponseWriter, r *http.Request) {
 	candidatureID := chi.URLParam(r, "id")
 
@@ -67,6 +96,17 @@ func (config *CandidatureConfig) GetOneCandidatureHandler(w http.ResponseWriter,
 	render.JSON(w, r, candidature.ToModel())
 }
 
+// UpdateCandidatureHandler gère la mise à jour d'une candidature
+// @Summary Mettre à jour une candidature
+// @Description Permet de mettre à jour une candidature
+// @Tags Candidature
+// @Accept json
+// @Produce json
+// @Param id path int true "Candidature ID"
+// @Param candidature body model.CandidatureRequest true "Candidature request"
+// @Success 200 {object} dbmodel.CandidatureEntry
+// @Failure 400 {object} map[string]string
+// @Router /candidatures/{id} [put]
 func (config *CandidatureConfig) UpdateCandidatureHandler(w http.ResponseWriter, r *http.Request) {
 	candidatureId := chi.URLParam(r, "id")
 	intcandidatureId, err := strconv.Atoi(candidatureId)
@@ -101,6 +141,15 @@ func (config *CandidatureConfig) UpdateCandidatureHandler(w http.ResponseWriter,
 	render.JSON(w, r, updatedCandidature.ToModel())
 }
 
+// DeleteCandidatureHandler gère la suppression d'une candidature
+// @Summary Supprimer une candidature
+// @Description Permet de supprimer une candidature
+// @Tags Candidature
+// @Produce json
+// @Param id path int true "Candidature ID"
+// @Success 200 {string} string
+// @Failure 400 {object} map[string]string
+// @Router /candidatures/{id} [delete]
 func (config *CandidatureConfig) DeleteCandidatureHandler(w http.ResponseWriter, r *http.Request) {
 	candidatureId := chi.URLParam(r, "id")
 
