@@ -23,9 +23,9 @@ func (a *CandidatureRequest) Bind(r *http.Request) error {
 }
 
 type CandidatureResponse struct {
-	ID      uint            `json:"id"`
-	User    UserResponse    `json:"user"`
-	Annonce AnnonceResponse `json:"annonce"`
-	Date    time.Time       `json:"date"`
-	Status  string          `json:"status"`
+	ID      uint      `json:"id"`
+	User    uint      `json:"user"`
+	Annonce uint      `json:"annonce"`
+	Date    time.Time `json:"date"`
+	Status  string    `json:"status"`
 }

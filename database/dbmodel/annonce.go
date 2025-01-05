@@ -32,8 +32,8 @@ func (annonce *AnnonceEntry) ToModel() *model.AnnonceResponse {
 	for _, candidature := range annonce.Candidature {
 		candidatureResponses = append(candidatureResponses, model.CandidatureResponse{
 			ID:      candidature.ID,
-			User:    model.UserResponse{ID: candidature.UserID},
-			Annonce: model.AnnonceResponse{ID: annonce.ID, Title: annonce.Title},
+			User:    candidature.UserID,
+			Annonce: annonce.ID,
 			Date:    candidature.Date,
 			Status:  candidature.Status,
 		})

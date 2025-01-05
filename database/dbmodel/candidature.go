@@ -16,18 +16,19 @@ type CandidatureEntry struct {
 }
 
 func (candidature *CandidatureEntry) ToModel() *model.CandidatureResponse {
-	var r *candidatureRepository
+	// var r *candidatureRepository
 
-	var userEntrie *UserEntry
-	if err := r.db.First(&userEntrie, candidature.UserID).Error; err != nil {
-	}
+	// var userEntrie *UserEntry
+	// if err := r.db.First(&userEntrie, candidature.UserID).Error; err != nil {
+	// }
 
-	var annonceEntrie *AnnonceEntry
-	if err := r.db.First(&annonceEntrie, candidature.AnnonceID).Error; err != nil {
-	}
+	// var annonceEntrie *AnnonceEntry
+	// if err := r.db.First(&annonceEntrie, candidature.AnnonceID).Error; err != nil {
+	// }
+
 	return &model.CandidatureResponse{
-		User:    *userEntrie.ToModel(),
-		Annonce: *annonceEntrie.ToModel(),
+		User:    candidature.UserID,
+		Annonce: candidature.AnnonceID,
 		Date:    candidature.Date,
 		Status:  candidature.Status,
 	}
