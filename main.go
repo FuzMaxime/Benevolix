@@ -16,6 +16,7 @@ import (
 
 func Routes(configuration *config.Config) *chi.Mux {
 	router := chi.NewRouter()
+	router.Use(middleware.Logger)
 
 	router.Mount("/api/v1/auth", authentification.Routes(configuration))
 	// protected routes
@@ -24,7 +25,6 @@ func Routes(configuration *config.Config) *chi.Mux {
 	router.Mount("/api/v1/candidatures", candidature.Routes(configuration))
 	router.Mount("/api/v1/users", user.Routes(configuration))
 
-	router.Use(middleware.Logger)
 	return router
 }
 

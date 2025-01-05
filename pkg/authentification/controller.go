@@ -17,19 +17,15 @@ func New(configuration *config.Config) *LoginConfig {
 }
 
 func (config *LoginConfig) Login(w http.ResponseWriter, r *http.Request) {
+	print("test")
 	var payload struct {
 		Email    string `json:"email"`
 		Password string `json:"password"`
 	}
 	json.NewDecoder(r.Body).Decode(&payload)
-
 	user, exist := config.UserRepository.GetUserByEmail(payload.Email)
 
 	if exist != nil || bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(payload.Password)) != nil {
-		print(payload.Email)
-		print(payload.Password)
-		print(bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(payload.Password)))
-		print(exist)
 		http.Error(w, "Invalid email or password", http.StatusUnauthorized)
 		return
 	}

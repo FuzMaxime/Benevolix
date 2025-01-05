@@ -2,6 +2,7 @@ package dbmodel
 
 import (
 	"benevolix/pkg/model"
+	"errors"
 
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
@@ -97,6 +98,8 @@ func (r *userRepository) GetUserByEmail(email string) (*UserEntry, error) {
 	var entries []*UserEntry
 	if err := r.db.Raw("SELECT * FROM user_entries WHERE email = ?;", email).Scan(&entries).Error; err != nil {
 		return nil, err
+	} else if len(entries) == 0 {
+		return nil, errors.New("no email found")
 	}
 	return entries[0], nil
 }
