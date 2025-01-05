@@ -4,6 +4,7 @@ import (
 	"benevolix/config"
 	"encoding/json"
 	"net/http"
+	"os"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -30,7 +31,7 @@ func (config *LoginConfig) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := GenerateToken("your_secret_key", payload.Email)
+	token, err := GenerateToken(os.Getenv("API_Key"), payload.Email)
 	if err != nil {
 		http.Error(w, "Failed to generate token", http.StatusInternalServerError)
 		return
