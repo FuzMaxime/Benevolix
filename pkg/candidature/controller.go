@@ -6,6 +6,7 @@ import (
 	"benevolix/pkg/model"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/render"
@@ -26,7 +27,13 @@ func (config *CandidatureConfig) CreateCandidatureHandler(w http.ResponseWriter,
 		return
 	}
 
-	candidatureEntry := &dbmodel.CandidatureEntry{UserID: req.UserID, AnnonceID: req.AnnonceID, Date: req.Date, Status: req.Status}
+	// Layout correspondant au format de la chaîne
+	layout := "2006-01-02"
+
+	// Conversion de la chaîne en time.Time
+	parsedTime, _ := time.Parse(layout, req.Date)
+
+	candidatureEntry := &dbmodel.CandidatureEntry{UserID: req.UserID, AnnonceID: req.AnnonceID, Date: parsedTime, Status: req.Status}
 	config.CandidatureRepository.Create(candidatureEntry)
 
 	render.JSON(w, r, candidatureEntry.ToModel())
@@ -87,9 +94,15 @@ func (config *CandidatureConfig) UpdateCandidatureHandler(w http.ResponseWriter,
 		return
 	}
 
+	// Layout correspondant au format de la chaîne
+	layout := "2006-01-02"
+
+	// Conversion de la chaîne en time.Time
+	parsedTime, _ := time.Parse(layout, req.Date)
+
 	candidatureEntry.UserID = req.UserID
 	candidatureEntry.AnnonceID = req.AnnonceID
-	candidatureEntry.Date = req.Date
+	candidatureEntry.Date = parsedTime
 	candidatureEntry.Status = req.Status
 
 	updatedCandidature, err := config.CandidatureRepository.Update(candidatureEntry)
