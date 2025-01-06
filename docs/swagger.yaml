@@ -6,22 +6,30 @@ definitions:
         type: string
       password:
         type: string
+    required:
+    - email
+    - password
     type: object
   dbmodel.AnnonceEntry:
     properties:
       address:
+        example: Rue de la Paix 1, 1000 Lausanne
         type: string
       candidature:
         items:
           $ref: '#/definitions/dbmodel.CandidatureEntry'
         type: array
       date:
+        example: 02/01/2025
         type: string
       description:
+        example: Description de l'annonce
         type: string
       duration:
+        example: 2
         type: integer
       is_remote:
+        example: true
         type: boolean
       tags:
         items:
@@ -32,7 +40,13 @@ definitions:
           type: integer
         type: array
       title:
+        example: Titre de l'annonce
         type: string
+    required:
+    - date
+    - duration
+    - tags
+    - title
     type: object
   dbmodel.CandidatureEntry:
     properties:
@@ -84,21 +98,35 @@ definitions:
   model.AnnonceRequest:
     properties:
       address:
+        example: Rue de la Paix 1, 1000 Lausanne
         type: string
       date:
+        example: 02/01/2025
         type: string
       description:
+        example: Description de l'annonce
         type: string
       duration:
+        example: 2
         type: integer
       is_remote:
+        example: true
         type: boolean
       tags:
         items:
           type: integer
         type: array
       title:
+        example: Titre de l'annonce
         type: string
+    required:
+    - address
+    - date
+    - description
+    - duration
+    - is_remote
+    - tags
+    - title
     type: object
   model.AnnonceResponse:
     properties:
@@ -130,11 +158,18 @@ definitions:
       annonce_id:
         type: integer
       date:
+        example: 02/01/2025
         type: string
       status:
+        example: Waiting
         type: string
       user_id:
         type: integer
+    required:
+    - annonce_id
+    - date
+    - status
+    - user_id
     type: object
   model.CandidatureResponse:
     properties:
@@ -152,7 +187,10 @@ definitions:
   model.TagRequest:
     properties:
       name:
+        example: Tag name
         type: string
+    required:
+    - name
     type: object
   model.TagResponse:
     properties:
@@ -164,19 +202,34 @@ definitions:
   model.UserRequest:
     properties:
       bio:
+        example: Je suis un étudiant en informatique
         type: string
       city:
+        example: Nantes
         type: string
       email:
+        example: example@example.com
         type: string
       first_name:
+        example: Prénom
         type: string
       last_name:
+        example: Nom de famille
         type: string
       password:
+        example: password
         type: string
       phone:
+        example: "0791234567"
         type: string
+    required:
+    - bio
+    - city
+    - email
+    - first_name
+    - last_name
+    - password
+    - phone
     type: object
   model.UserResponse:
     properties:

@@ -29,6 +29,18 @@ func New(configuration *config.Config) *AnnonceConfig {
 // @Success 200 {object} model.AnnonceResponse
 // @Failure 400 {object} map[string]string
 // @Router /annonce [post]
+/*
+{
+	"title": "Titre de l'annonce",
+	"description": "Description de l'annonce",
+	"date": "02/01/2025",
+	"duration": 2,
+	"address": "Rue de la Paix 1, 1000 Lausanne",
+	"is_remote": true,
+	"tags": [1, 2],
+	"candidature": []
+}
+*/
 func (config *AnnonceConfig) CreateAnnonceHandler(w http.ResponseWriter, r *http.Request) {
 	req := &model.AnnonceRequest{}
 	if err := render.Bind(r, req); err != nil {

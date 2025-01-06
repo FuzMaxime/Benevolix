@@ -32,6 +32,12 @@ func New(configuration *config.Config) *CandidatureConfig {
 // @Success 200 {object} dbmodel.CandidatureEntry
 // @Failure 400 {object} map[string]string
 // @Router /candidature [post]
+// {
+// 	"user_id": 1,
+// 	"annonce_id": 1,
+// 	"date": "2025-01-02",
+// 	"status": "pending"
+// }
 func (config *CandidatureConfig) CreateCandidatureHandler(w http.ResponseWriter, r *http.Request) {
 	req := &model.CandidatureRequest{}
 	if err := render.Bind(r, req); err != nil {

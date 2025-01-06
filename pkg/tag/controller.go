@@ -21,9 +21,6 @@ func New(configuration *config.Config) *TagConfig {
 
 // GET
 
-/*
-Get all tags
-*/
 // GetTagsHandler gère la récupération de tous les tags
 // @Summary Récupérer tous les tags
 // @Description Permet de récupérer tous les tags
@@ -45,9 +42,6 @@ func (config *TagConfig) GetTagsHandler(w http.ResponseWriter, r *http.Request) 
 	render.JSON(w, r, res)
 }
 
-/*
-Get one tag by id
-*/
 // GetTagHandler gère la récupération d'un tag par son ID
 // @Summary Récupérer un tag par son ID
 // @Description Permet de récupérer un tag par son ID
@@ -81,9 +75,6 @@ func (config *TagConfig) GetTagHandler(w http.ResponseWriter, r *http.Request) {
 
 // POST
 
-/*
-Create tag
-*/
 // AddTagHandler gère la création d'un tag
 // @Summary Créer un tag
 // @Description Permet de créer un nouveau tag
@@ -94,6 +85,9 @@ Create tag
 // @Success 200 {object} dbmodel.TagEntry
 // @Failure 400 {object} map[string]string
 // @Router /tags [post]
+// {
+// 	"name": "example"
+// }
 func (config *TagConfig) AddTagHandler(w http.ResponseWriter, r *http.Request) {
 	req := &model.TagRequest{}
 	if err := render.Bind(r, req); err != nil {
@@ -112,9 +106,6 @@ func (config *TagConfig) AddTagHandler(w http.ResponseWriter, r *http.Request) {
 
 // PUT
 
-/*
-Update tag
-*/
 // UpdateHandler gère la mise à jour d'un tag
 // @Summary Mettre à jour un tag
 // @Description Permet de mettre à jour un tag
