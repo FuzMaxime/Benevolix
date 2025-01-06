@@ -70,7 +70,7 @@ func (r *userRepository) Create(entry *UserEntry) (*UserEntry, error) {
 
 func (r *userRepository) GetAll() ([]*UserEntry, error) {
 	var entries []*UserEntry
-	if err := r.db.Find(&entries).Error; err != nil {
+	if err := r.db.Preload("Tags").Find(&entries).Error; err != nil {
 		return nil, err
 	}
 	return entries, nil
@@ -78,7 +78,7 @@ func (r *userRepository) GetAll() ([]*UserEntry, error) {
 
 func (r *userRepository) GetById(id uint) (*UserEntry, error) {
 	var entrie *UserEntry
-	if err := r.db.First(&entrie, id).Error; err != nil {
+	if err := r.db.Preload("Tags").First(&entrie, id).Error; err != nil {
 		return nil, err
 	}
 	return entrie, nil
@@ -97,7 +97,7 @@ func (r *userRepository) Delete(id int) error {
 
 func (r *userRepository) GetUserByEmail(email string) (*UserEntry, error) {
 	var entries []*UserEntry
-	if err := r.db.Raw("SELECT * FROM user_entries WHERE email = ?;", email).Scan(&entries).Error; err != nil {
+	if err := r.db.Preload("Tags").Raw("SELECT * FROM user_entries WHERE email = ?;", email).Scan(&entries).Error; err != nil {
 		return nil, err
 	} else if len(entries) == 0 {
 		return nil, errors.New("no email found")
