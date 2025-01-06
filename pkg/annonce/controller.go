@@ -62,7 +62,6 @@ func (config *AnnonceConfig) CreateAnnonceHandler(w http.ResponseWriter, r *http
 
 	AnnonceEntry := &dbmodel.AnnonceEntry{Title: req.Title, Description: req.Description, Date: req.Date, Duration: req.Duration, Address: req.Address, IsRemote: req.IsRemote, Tags: tags}
 	config.AnnonceEntryRepository.Create(AnnonceEntry)
-
 	render.JSON(w, r, AnnonceEntry.ToModel())
 }
 
