@@ -926,6 +926,9 @@ const docTemplate = `{
                 "status": {
                     "type": "string"
                 },
+                "uniqueConstraint": {
+                    "type": "string"
+                },
                 "user_id": {
                     "type": "integer"
                 }
