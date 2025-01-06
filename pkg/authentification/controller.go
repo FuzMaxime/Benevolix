@@ -1,30 +1,56 @@
 package authentification
 
 import (
+	"benevolix/config"
+	"encoding/json"
 	"net/http"
+	"os"
+
+	"golang.org/x/crypto/bcrypt"
+
+	_ "benevolix/docs" // Importez les fichiers de documentation générés
 )
 
-func Login(w http.ResponseWriter, r *http.Request) {
-	// var payload struct {
-	// 	Email    string `json:"email"`
-	// 	Password string `json:"password"`
-	// }
-	// json.NewDecoder(r.Body).Decode(&payload)
+type LoginConfig struct {
+	*config.Config
+}
 
-	// // TODO : check if user and password exist in database
+func New(configuration *config.Config) *LoginConfig {
+	return &LoginConfig{configuration}
+}
 
-	// hashedPassword, exists := users[payload.Email]
-	// if !exists || bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(payload.Password)) != nil {
-	// 	http.Error(w, "Invalid email or password", http.StatusUnauthorized)
-	// 	return
-	// }
+// LoginPayload représente le payload pour la connexion
+type LoginPayload struct {
+    Email    string `json:"email"`
+    Password string `json:"password"`
+}
 
-	// token, err := GenerateToken("your_secret_key", payload.Email)
-	// if err != nil {
-	// 	http.Error(w, "Failed to generate token", http.StatusInternalServerError)
-	// 	return
-	// }
+// @Summary Connexion de l'utilisateur
+// @Description Permet à un utilisateur de se connecter avec ses identifiants.
+// @Tags Authentification
+// @Accept json
+// @Produce json
+// @Param payload body LoginPayload true "Login payload"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Router /login [post]
+func (config *LoginConfig) Login(w http.ResponseWriter, r *http.Request) {
+	var payload LoginPayload
+	
+	json.NewDecoder(r.Body).Decode(&payload)
+	user, exist := config.UserRepository.GetUserByEmail(payload.Email)
 
-	// w.Header().Set("Content-Type", "application/json")
-	// json.NewEncoder(w).Encode(map[string]string{"token": token})
+	if exist != nil || bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(payload.Password)) != nil {
+		http.Error(w, "Invalid email or password", http.StatusUnauthorized)
+		return
+	}
+
+	token, err := GenerateToken(os.Getenv("API_Key"), payload.Email)
+	if err != nil {
+		http.Error(w, "Failed to generate token", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{"token": token})
 }

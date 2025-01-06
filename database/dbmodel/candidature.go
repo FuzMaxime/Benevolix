@@ -7,8 +7,9 @@ import (
 	"gorm.io/gorm"
 )
 
+// CandidatureEntry représente une candidature dans la base de données
 type CandidatureEntry struct {
-	gorm.Model
+	gorm.Model `swaggerignore:"true"` // Ignore gorm.Model pour Swagger
 	UserID    uint      `json:"user_id"`
 	AnnonceID uint      `json:"annonce_id"`
 	Date      time.Time `json:"date"`
@@ -16,18 +17,20 @@ type CandidatureEntry struct {
 }
 
 func (candidature *CandidatureEntry) ToModel() *model.CandidatureResponse {
-	var r *candidatureRepository
+	// var r *candidatureRepository
 
-	var userEntrie *UserEntry
-	if err := r.db.First(&userEntrie, candidature.UserID).Error; err != nil {
-	}
+	// var userEntrie *UserEntry
+	// if err := r.db.First(&userEntrie, candidature.UserID).Error; err != nil {
+	// }
 
-	var annonceEntrie *AnnonceEntry
-	if err := r.db.First(&annonceEntrie, candidature.AnnonceID).Error; err != nil {
-	}
+	// var annonceEntrie *AnnonceEntry
+	// if err := r.db.First(&annonceEntrie, candidature.AnnonceID).Error; err != nil {
+	// }
+
 	return &model.CandidatureResponse{
-		User:    *userEntrie.ToModel(),
-		Annonce: *annonceEntrie.ToModel(),
+		ID:      candidature.ID,
+		User:    candidature.UserID,
+		Annonce: candidature.AnnonceID,
 		Date:    candidature.Date,
 		Status:  candidature.Status,
 	}

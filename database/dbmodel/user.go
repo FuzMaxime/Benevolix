@@ -2,16 +2,18 @@ package dbmodel
 
 import (
 	"benevolix/pkg/model"
+	"errors"
 
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
 type UserEntry struct {
-	gorm.Model
+	gorm.Model `swaggerignore:"true"` // Ignore gorm.Model pour Swagger
 	LastName    string            `json:"last_name"`
 	FirstName   string            `json:"first_name"`
-	Phone       string            `json:"phone"`
-	Email       string            `json:"email"`
+	Phone       string            `json:"phone" gorm:"uniqueIndex"`
+	Email       string            `json:"email" gorm:"uniqueIndex"`
 	Password    string            `json:"password"`
 	City        string            `json:"city"`
 	Bio         string            `json:"bio"`
@@ -25,6 +27,7 @@ func (user *UserEntry) ToModel() *model.UserResponse {
 		tags = append(tags, *tag.ToModel())
 	}
 	return &model.UserResponse{
+		ID:        user.ID,
 		LastName:  user.LastName,
 		FirstName: user.FirstName,
 		Email:     user.Email,
@@ -54,6 +57,11 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 }
 
 func (r *userRepository) Create(entry *UserEntry) (*UserEntry, error) {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(entry.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return nil, err
+	}
+	entry.Password = string(hashedPassword)
 	if err := r.db.Create(entry).Error; err != nil {
 		return nil, err
 	}
@@ -91,6 +99,8 @@ func (r *userRepository) GetUserByEmail(email string) (*UserEntry, error) {
 	var entries []*UserEntry
 	if err := r.db.Raw("SELECT * FROM user_entries WHERE email = ?;", email).Scan(&entries).Error; err != nil {
 		return nil, err
+	} else if len(entries) == 0 {
+		return nil, errors.New("no email found")
 	}
 	return entries[0], nil
 }

@@ -42,9 +42,6 @@ func (a *UserRequest) Bind(r *http.Request) error {
 		}
 	}
 
-	if a.FirstName == "" && len(a.Phone) < 40 {
-		return errors.New("firstname must be there")
-	}
 	for _, r := range a.FirstName {
 		if !unicode.IsLetter(r) {
 			return errors.New("firstname must be charactere")
@@ -84,6 +81,7 @@ func (a *UserRequest) Bind(r *http.Request) error {
 }
 
 type UserResponse struct {
+	ID        uint          `json:"id"`
 	LastName  string        `json:"last_name"`
 	FirstName string        `json:"first_name"`
 	Phone     string        `json:"phone"`

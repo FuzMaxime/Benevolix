@@ -18,5 +18,6 @@ func (a *TagRequest) Bind(r *http.Request) error {
 }
 
 type TagResponse struct {
+	ID   uint   `json:"id"`
 	Name string `json:"name"`
 }

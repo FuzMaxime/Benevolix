@@ -2,6 +2,8 @@ package user
 
 import (
 	"benevolix/config"
+	"benevolix/pkg/authentification"
+	"os"
 
 	"github.com/go-chi/chi"
 )
@@ -10,14 +12,18 @@ func Routes(configuration *config.Config) *chi.Mux {
 	userConfig := New(configuration)
 	router := chi.NewRouter()
 
-	router.Get("/", userConfig.GetAllUsersHandler)
-	router.Get("/{id}", userConfig.GetByIdUserHandler)
-
 	router.Post("/", userConfig.CreateUserHandler)
 
-	router.Put("/{id}", userConfig.UpdateUserHandler)
+	router.Route("/", func(r chi.Router) {
+		r.Use(authentification.AuthMiddleware(os.Getenv("API_Key")))
+		r.Get("/", userConfig.GetAllUsersHandler)
+		r.Get("/{id}", userConfig.GetByIdUserHandler)
 
-	router.Delete("/{id}", userConfig.DeleteUserHandler)
+		r.Put("/{id}", userConfig.UpdateUserHandler)
+
+		r.Delete("/{id}", userConfig.DeleteUserHandler)
+
+	})
 
 	return router
 }

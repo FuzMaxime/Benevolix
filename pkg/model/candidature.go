@@ -7,10 +7,10 @@ import (
 )
 
 type CandidatureRequest struct {
-	UserID    uint      `json:"user_id"`
-	AnnonceID uint      `json:"annonce_id"`
-	Date      time.Time `json:"date"`
-	Status    string    `json:"status"`
+	UserID    uint   `json:"user_id"`
+	AnnonceID uint   `json:"annonce_id"`
+	Date      string `json:"date"`
+	Status    string `json:"status"`
 }
 
 func (a *CandidatureRequest) Bind(r *http.Request) error {
@@ -23,8 +23,9 @@ func (a *CandidatureRequest) Bind(r *http.Request) error {
 }
 
 type CandidatureResponse struct {
-	User    UserResponse    `json:"user"`
-	Annonce AnnonceResponse `json:"annonce"`
-	Date    time.Time       `json:"date"`
-	Status  string          `json:"status"`
+	ID      uint      `json:"id"`
+	User    uint      `json:"user"`
+	Annonce uint      `json:"annonce"`
+	Date    time.Time `json:"date"`
+	Status  string    `json:"status"`
 }

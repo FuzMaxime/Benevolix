@@ -24,6 +24,14 @@ func New(configuration *config.Config) *TagConfig {
 /*
 Get all tags
 */
+// GetTagsHandler gère la récupération de tous les tags
+// @Summary Récupérer tous les tags
+// @Description Permet de récupérer tous les tags
+// @Tags Tag
+// @Produce json
+// @Success 200 {array} dbmodel.TagEntry
+// @Failure 500 {object} map[string]string
+// @Router /tags [get]
 func (config *TagConfig) GetTagsHandler(w http.ResponseWriter, r *http.Request) {
 	tags, err := config.TagRepository.GetAll()
 	if err != nil {
@@ -40,6 +48,15 @@ func (config *TagConfig) GetTagsHandler(w http.ResponseWriter, r *http.Request) 
 /*
 Get one tag by id
 */
+// GetTagHandler gère la récupération d'un tag par son ID
+// @Summary Récupérer un tag par son ID
+// @Description Permet de récupérer un tag par son ID
+// @Tags Tag
+// @Produce json
+// @Param id path int true "Tag ID"
+// @Success 200 {object} dbmodel.TagEntry
+// @Failure 400 {object} map[string]string
+// @Router /tags/{id} [get]
 func (config *TagConfig) GetTagHandler(w http.ResponseWriter, r *http.Request) {
 	tagID := chi.URLParam(r, "id")
 
@@ -67,6 +84,16 @@ func (config *TagConfig) GetTagHandler(w http.ResponseWriter, r *http.Request) {
 /*
 Create tag
 */
+// AddTagHandler gère la création d'un tag
+// @Summary Créer un tag
+// @Description Permet de créer un nouveau tag
+// @Tags Tag
+// @Accept json
+// @Produce json
+// @Param tag body model.TagRequest true "Tag request"
+// @Success 200 {object} dbmodel.TagEntry
+// @Failure 400 {object} map[string]string
+// @Router /tags [post]
 func (config *TagConfig) AddTagHandler(w http.ResponseWriter, r *http.Request) {
 	req := &model.TagRequest{}
 	if err := render.Bind(r, req); err != nil {
@@ -88,6 +115,17 @@ func (config *TagConfig) AddTagHandler(w http.ResponseWriter, r *http.Request) {
 /*
 Update tag
 */
+// UpdateHandler gère la mise à jour d'un tag
+// @Summary Mettre à jour un tag
+// @Description Permet de mettre à jour un tag
+// @Tags Tag
+// @Accept json
+// @Produce json
+// @Param id path int true "Tag ID"
+// @Param tag body model.TagRequest true "Tag request"
+// @Success 200 {object} dbmodel.TagEntry
+// @Failure 400 {object} map[string]string
+// @Router /tags/{id} [put]
 func (config *TagConfig) UpdateHandler(w http.ResponseWriter, r *http.Request) { // TO do
 	tagId := chi.URLParam(r, "id")
 
@@ -127,6 +165,15 @@ func (config *TagConfig) UpdateHandler(w http.ResponseWriter, r *http.Request) {
 
 // DELETE
 
+// DeleteHandler gère la suppression d'un tag
+// @Summary Supprimer un tag
+// @Description Permet de supprimer un tag
+// @Tags Tag
+// @Produce json
+// @Param id path int true "Tag ID"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Router /tags/{id} [delete]
 func (config *TagConfig) DeleteHandler(w http.ResponseWriter, r *http.Request) { // TO do
 	tagId, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
