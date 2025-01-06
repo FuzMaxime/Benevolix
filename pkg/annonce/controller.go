@@ -19,6 +19,16 @@ func New(configuration *config.Config) *AnnonceConfig {
 	return &AnnonceConfig{configuration}
 }
 
+// CreateAnnonceHandler gère la création d'une annonce
+// @Summary Créer une annonce
+// @Description Permet de créer une nouvelle annonce
+// @Tags Annonce
+// @Accept json
+// @Produce json
+// @Param annonce body model.AnnonceRequest true "Annonce request"
+// @Success 200 {object} model.AnnonceResponse
+// @Failure 400 {object} map[string]string
+// @Router /annonce [post]
 func (config *AnnonceConfig) CreateAnnonceHandler(w http.ResponseWriter, r *http.Request) {
 	req := &model.AnnonceRequest{}
 	if err := render.Bind(r, req); err != nil {
@@ -51,6 +61,14 @@ func (config *AnnonceConfig) CreateAnnonceHandler(w http.ResponseWriter, r *http
 	render.JSON(w, r, res)
 }
 
+// GetAllAnnoncesHandler gère la récupération de toutes les annonces
+// @Summary Récupérer toutes les annonces
+// @Description Permet de récupérer toutes les annonces
+// @Tags Annonce
+// @Produce json
+// @Success 200 {array} model.AnnonceResponse
+// @Failure 500 {object} map[string]string
+// @Router /annonces [get]
 func (config *AnnonceConfig) GetAllAnnoncesHandler(w http.ResponseWriter, r *http.Request) {
 	entries, err := config.AnnonceEntryRepository.GetAll()
 	if err != nil {
@@ -65,6 +83,15 @@ func (config *AnnonceConfig) GetAllAnnoncesHandler(w http.ResponseWriter, r *htt
 	render.JSON(w, r, annoncesResponse)
 }
 
+// GetOneAnnonceHandler gère la récupération d'une annonce par son ID
+// @Summary Récupérer une annonce par son ID
+// @Description Permet de récupérer une annonce par son ID
+// @Tags Annonce
+// @Produce json
+// @Param id path int true "Annonce ID"
+// @Success 200 {object} model.AnnonceResponse
+// @Failure 400 {object} map[string]string
+// @Router /annonces/{id} [get]
 func (config *AnnonceConfig) GetOneAnnonceHandler(w http.ResponseWriter, r *http.Request) {
 	AnnonceId := chi.URLParam(r, "id")
 
@@ -90,6 +117,17 @@ func (config *AnnonceConfig) GetOneAnnonceHandler(w http.ResponseWriter, r *http
 	render.JSON(w, r, AnnonceTarget)
 }
 
+// UpdateAnnonceHandler gère la mise à jour d'une annonce
+// @Summary Mettre à jour une annonce
+// @Description Permet de mettre à jour une annonce
+// @Tags Annonce
+// @Accept json
+// @Produce json
+// @Param id path int true "Annonce ID"
+// @Param annonce body model.AnnonceRequest true "Annonce request"
+// @Success 200 {object} model.AnnonceResponse
+// @Failure 400 {object} map[string]string
+// @Router /annonces/{id} [put]
 func (config *AnnonceConfig) UpdateAnnonceHandler(w http.ResponseWriter, r *http.Request) {
 	AnnonceId := chi.URLParam(r, "id")
 	intAnnonceId, err := strconv.Atoi(AnnonceId)
@@ -128,6 +166,15 @@ func (config *AnnonceConfig) UpdateAnnonceHandler(w http.ResponseWriter, r *http
 	render.JSON(w, r, updatedAnnonce)
 }
 
+// DeleteAnnonceHandler gère la suppression d'une annonce
+// @Summary Supprimer une annonce
+// @Description Permet de supprimer une annonce
+// @Tags Annonce
+// @Produce json
+// @Param id path int true "Annonce ID"
+// @Success 200 {string} string
+// @Failure 400 {object} map[string]string
+// @Router /annonces/{id} [delete]
 func (config *AnnonceConfig) DeleteAnnonceHandler(w http.ResponseWriter, r *http.Request) {
 	AnnonceId := chi.URLParam(r, "id")
 

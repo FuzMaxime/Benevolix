@@ -9,7 +9,7 @@ import (
 )
 
 type UserEntry struct {
-	gorm.Model
+	gorm.Model `swaggerignore:"true"` // Ignore gorm.Model pour Swagger
 	LastName    string            `json:"last_name"`
 	FirstName   string            `json:"first_name"`
 	Phone       string            `json:"phone" gorm:"uniqueIndex"`

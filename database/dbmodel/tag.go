@@ -7,7 +7,7 @@ import (
 )
 
 type TagEntry struct {
-	gorm.Model
+	gorm.Model `swaggerignore:"true"` // Ignore gorm.Model pour Swagger
 	Name     string
 	Annonces []*AnnonceEntry `gorm:"many2many:annonce_tags"`
 	Users    []*UserEntry    `gorm:"many2many:user_tags"`
