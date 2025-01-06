@@ -62,15 +62,7 @@ func (config *AnnonceConfig) CreateAnnonceHandler(w http.ResponseWriter, r *http
 
 	AnnonceEntry := &dbmodel.AnnonceEntry{Title: req.Title, Description: req.Description, Date: req.Date, Duration: req.Duration, Address: req.Address, IsRemote: req.IsRemote, Tags: tags /*Candidature: req.Candidature*/}
 	config.AnnonceEntryRepository.Create(AnnonceEntry)
-
-	// Create the tags response
-	var tagsResponse []model.TagResponse
-	for _, tag := range tags {
-		tagsResponse = append(tagsResponse, model.TagResponse{Name: tag.Name})
-	}
-
-	res := &model.AnnonceResponse{Title: req.Title, Description: req.Description, Date: req.Date, Duration: req.Duration, Address: req.Address, IsRemote: req.IsRemote, Tags: tagsResponse /*Candidature: req.Candidature*/}
-	render.JSON(w, r, res)
+	render.JSON(w, r, AnnonceEntry.ToModel())
 }
 
 // GetAllAnnoncesHandler gère la récupération de toutes les annonces
