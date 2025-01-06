@@ -32,6 +32,13 @@ func New(configuration *config.Config) *CandidatureConfig {
 // @Success 200 {object} dbmodel.CandidatureEntry
 // @Failure 400 {object} map[string]string
 // @Router /candidature [post]
+//
+//	{
+//		"user_id": 1,
+//		"annonce_id": 1,
+//		"date": "2025-01-02",
+//		"status": "pending"
+//	}
 func (config *CandidatureConfig) CreateCandidatureHandler(w http.ResponseWriter, r *http.Request) {
 	req := &model.CandidatureRequest{}
 	if err := render.Bind(r, req); err != nil {
@@ -45,11 +52,15 @@ func (config *CandidatureConfig) CreateCandidatureHandler(w http.ResponseWriter,
 	// Conversion de la chaîne en time.Time
 	parsedTime, _ := time.Parse(layout, req.Date)
 
-	candidatureEntry := &dbmodel.CandidatureEntry{UserID: req.UserID, AnnonceID: req.AnnonceID, Date: parsedTime, Status: "Waiting"}
+	if config.CandidatureRepository.HasAlreadyApply(int(req.AnnonceID), int(req.UserID)) {
+		render.JSON(w, r, map[string]string{"error": "You have already apply to this annonce"})
+		return
+	}
+
+	candidatureEntry := &dbmodel.CandidatureEntry{UserID: req.UserID, AnnonceID: req.AnnonceID, Date: parsedTime, Status: "Waiting", UniqueConstraint: strconv.Itoa(int(req.UserID)) + strconv.Itoa(int(req.AnnonceID))}
 	if _, err := config.CandidatureRepository.Create(candidatureEntry); err != nil {
 		render.JSON(w, r, map[string]string{"error": "Cannot add new candidature to this annonce"})
 		return
-
 	}
 
 	render.JSON(w, r, candidatureEntry.ToModel())

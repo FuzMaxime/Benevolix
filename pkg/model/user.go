@@ -8,13 +8,14 @@ import (
 )
 
 type UserRequest struct {
-	LastName  string `json:"last_name"`
-	FirstName string `json:"first_name"`
-	Phone     string `json:"phone"`
-	Email     string `json:"email"`
-	Password  string `json:"password"`
-	City      string `json:"city"`
-	Bio       string `json:"bio"`
+	LastName  string `json:"last_name" binding:"required" example:"Nom de famille"`
+	FirstName string `json:"first_name" binding:"required" example:"Prénom"`
+	Phone     string `json:"phone" example:"0791234567" binding:"required"`
+	Email     string `json:"email" example:"example@example.com" binding:"required"`
+	Password  string `json:"password" example:"password" binding:"required"`
+	City      string `json:"city" example:"Nantes" binding:"required"`
+	Bio       string `json:"bio" example:"Je suis un étudiant en informatique" binding:"required"`
+	Tags      []uint `json:"tags"`
 }
 
 func (a *UserRequest) Bind(r *http.Request) error {

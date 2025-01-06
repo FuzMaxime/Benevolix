@@ -32,9 +32,18 @@ func New(configuration *config.Config) *UserConfig {
 func (config *UserConfig) CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 	req := &model.UserRequest{}
 	if err := render.Bind(r, req); err != nil {
-		render.JSON(w, r, map[string]string{"error": "Invalid user creation request loaded"})
-		print(err.Error())
+		render.JSON(w, r, map[string]string{"error": err.Error()})
 		return
+	}
+
+	var tags []dbmodel.TagEntry
+	for _, tag := range req.Tags {
+		tagEntry, err := config.TagRepository.GetById(tag)
+		if err != nil {
+			render.JSON(w, r, map[string]string{"error": "tag not found"})
+			return
+		}
+		tags = append(tags, *tagEntry)
 	}
 
 	userEntry := &dbmodel.UserEntry{
@@ -45,6 +54,7 @@ func (config *UserConfig) CreateUserHandler(w http.ResponseWriter, r *http.Reque
 		Phone:     req.Phone,
 		City:      req.City,
 		Bio:       req.Bio,
+		Tags:      tags,
 	}
 
 	if _, err := config.UserRepository.Create(userEntry); err != nil {

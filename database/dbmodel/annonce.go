@@ -10,13 +10,13 @@ import (
 type AnnonceEntry struct {
 	gorm.Model `swaggerignore:"true"` // Ignore gorm.Model pour Swagger
 
-	Title       string             `json:"title"`
-	Description string             `json:"description"`
-	Date        time.Time          `json:"date"`
-	Duration    int                `json:"duration"`
-	Address     string             `json:"address"`
-	IsRemote    bool               `json:"is_remote"`
-	Tags        []TagEntry         `gorm:"many2many:annonce_tags;"`
+	Title       string             `json:"title" gorm:"not null" example:"Titre de l'annonce"`
+	Description string             `json:"description" example:"Description de l'annonce"`
+	Date        time.Time          `json:"date" gorm:"not null" example:"02/01/2025"`
+	Duration    int                `json:"duration" gorm:"not null" example:"2"`
+	Address     string             `json:"address" example:"Rue de la Paix 1, 1000 Lausanne"`
+	IsRemote    bool               `json:"is_remote" example:"true"`
+	Tags        []TagEntry         `gorm:"many2many:annonce_tags;not null" json:"tags"`
 	TagIDs      []uint             `gorm:"-" json:"tags_id"`
 	Candidature []CandidatureEntry `gorm:"foreignKey:AnnonceID;constraint:OnDelete:CASCADE;"`
 }

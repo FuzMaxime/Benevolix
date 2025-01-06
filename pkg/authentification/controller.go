@@ -21,8 +21,8 @@ func New(configuration *config.Config) *LoginConfig {
 
 // LoginPayload représente le payload pour la connexion
 type LoginPayload struct {
-    Email    string `json:"email"`
-    Password string `json:"password"`
+    Email    string `json:"email" binding:"required"`
+    Password string `json:"password" binding:"required"`
 }
 
 // @Summary Connexion de l'utilisateur
@@ -34,6 +34,10 @@ type LoginPayload struct {
 // @Success 200 {object} map[string]string
 // @Failure 400 {object} map[string]string
 // @Router /login [post]
+// {
+// 	"email": example@example.com"
+// 	"password": P@ssw0rd"
+// }
 func (config *LoginConfig) Login(w http.ResponseWriter, r *http.Request) {
 	var payload LoginPayload
 	

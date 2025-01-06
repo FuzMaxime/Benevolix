@@ -10,10 +10,12 @@ import (
 // CandidatureEntry représente une candidature dans la base de données
 type CandidatureEntry struct {
 	gorm.Model `swaggerignore:"true"` // Ignore gorm.Model pour Swagger
-	UserID     uint                   `json:"user_id" gorm:"index:AnnonceID,unique"`
-	AnnonceID  uint                   `json:"annonce_id" gorm:"index:UserId,unique"`
-	Date       time.Time              `json:"date"`
-	Status     string                 `json:"status"`
+	UserID     uint                   `json:"user_id" gorm:"not null"`
+	AnnonceID  uint                   `json:"annonce_id" gorm:"not null"`
+	Date       time.Time              `json:"date" gorm:"not null"`
+	Status     string                 `json:"status" gorm:"not null"`
+
+	UniqueConstraint string `gorm:"uniqueIndex:idx_user_annonce"`
 }
 
 func (candidature *CandidatureEntry) ToModel() *model.CandidatureResponse {
@@ -32,6 +34,7 @@ type CandidatureRepository interface {
 	GetById(id uint) (*CandidatureEntry, error)
 	Update(entry *CandidatureEntry) (*CandidatureEntry, error)
 	Delete(id int) error
+	HasAlreadyApply(annonce_id, user_id int) bool
 }
 
 type candidatureRepository struct {
@@ -74,4 +77,10 @@ func (r *candidatureRepository) Update(entry *CandidatureEntry) (*CandidatureEnt
 
 func (r *candidatureRepository) Delete(id int) error {
 	return r.db.Delete(&CandidatureEntry{}, id).Error
+}
+
+func (r *candidatureRepository) HasAlreadyApply(annonce_id, userId int) bool {
+	var candidature CandidatureEntry
+	err := r.db.Where("user_id = ? AND annonce_id = ?", userId, annonce_id).First(&candidature).Error
+	return err == nil
 }
