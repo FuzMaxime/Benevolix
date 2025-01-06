@@ -114,7 +114,7 @@ func (config *AnnonceConfig) GetOneAnnonceHandler(w http.ResponseWriter, r *http
 		render.JSON(w, r, map[string]string{"error": "Annonce not found"})
 		return
 	}
-	render.JSON(w, r, AnnonceTarget)
+	render.JSON(w, r, AnnonceTarget.ToModel())
 }
 
 // UpdateAnnonceHandler gère la mise à jour d'une annonce
