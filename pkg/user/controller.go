@@ -32,8 +32,7 @@ func New(configuration *config.Config) *UserConfig {
 func (config *UserConfig) CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 	req := &model.UserRequest{}
 	if err := render.Bind(r, req); err != nil {
-		render.JSON(w, r, map[string]string{"error": "Invalid user creation request loaded"})
-		print(err.Error())
+		render.JSON(w, r, map[string]string{"error": err.Error()})
 		return
 	}
 
