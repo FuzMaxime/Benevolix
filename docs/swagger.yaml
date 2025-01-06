@@ -139,7 +139,7 @@ definitions:
   model.CandidatureResponse:
     properties:
       annonce:
-        $ref: '#/definitions/model.AnnonceResponse'
+        type: integer
       date:
         type: string
       id:
@@ -147,7 +147,7 @@ definitions:
       status:
         type: string
       user:
-        $ref: '#/definitions/model.UserResponse'
+        type: integer
     type: object
   model.TagRequest:
     properties:

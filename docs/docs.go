@@ -1064,7 +1064,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "annonce": {
-                    "$ref": "#/definitions/model.AnnonceResponse"
+                    "type": "integer"
                 },
                 "date": {
                     "type": "string"
@@ -1076,7 +1076,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/model.UserResponse"
+                    "type": "integer"
                 }
             }
         },
