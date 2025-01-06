@@ -854,6 +854,10 @@ const docTemplate = `{
     "definitions": {
         "authentification.LoginPayload": {
             "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
             "properties": {
                 "email": {
                     "type": "string"
@@ -865,9 +869,16 @@ const docTemplate = `{
         },
         "dbmodel.AnnonceEntry": {
             "type": "object",
+            "required": [
+                "date",
+                "duration",
+                "tags",
+                "title"
+            ],
             "properties": {
                 "address": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Rue de la Paix 1, 1000 Lausanne"
                 },
                 "candidature": {
                     "type": "array",
@@ -876,16 +887,20 @@ const docTemplate = `{
                     }
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "02/01/2025"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Description de l'annonce"
                 },
                 "duration": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 2
                 },
                 "is_remote": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "example": true
                 },
                 "tags": {
                     "type": "array",
@@ -900,7 +915,8 @@ const docTemplate = `{
                     }
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Titre de l'annonce"
                 }
             }
         },
@@ -978,21 +994,35 @@ const docTemplate = `{
         },
         "model.AnnonceRequest": {
             "type": "object",
+            "required": [
+                "address",
+                "date",
+                "description",
+                "duration",
+                "is_remote",
+                "tags",
+                "title"
+            ],
             "properties": {
                 "address": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Rue de la Paix 1, 1000 Lausanne"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "02/01/2025"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Description de l'annonce"
                 },
                 "duration": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 2
                 },
                 "is_remote": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "example": true
                 },
                 "tags": {
                     "type": "array",
@@ -1001,7 +1031,8 @@ const docTemplate = `{
                     }
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Titre de l'annonce"
                 }
             }
         },
@@ -1045,15 +1076,23 @@ const docTemplate = `{
         },
         "model.CandidatureRequest": {
             "type": "object",
+            "required": [
+                "annonce_id",
+                "date",
+                "status",
+                "user_id"
+            ],
             "properties": {
                 "annonce_id": {
                     "type": "integer"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "02/01/2025"
                 },
                 "status": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Waiting"
                 },
                 "user_id": {
                     "type": "integer"
@@ -1082,9 +1121,13 @@ const docTemplate = `{
         },
         "model.TagRequest": {
             "type": "object",
+            "required": [
+                "name"
+            ],
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Tag name"
                 }
             }
         },
@@ -1101,27 +1144,43 @@ const docTemplate = `{
         },
         "model.UserRequest": {
             "type": "object",
+            "required": [
+                "bio",
+                "city",
+                "email",
+                "first_name",
+                "last_name",
+                "password",
+                "phone"
+            ],
             "properties": {
                 "bio": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Je suis un étudiant en informatique"
                 },
                 "city": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Nantes"
                 },
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "example@example.com"
                 },
                 "first_name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Prénom"
                 },
                 "last_name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Nom de famille"
                 },
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "password"
                 },
                 "phone": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "0791234567"
                 }
             }
         },

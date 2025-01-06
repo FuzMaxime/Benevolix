@@ -7,13 +7,13 @@ import (
 )
 
 type AnnonceRequest struct {
-	Title       string    `json:"title"`
-	Description string    `json:"description"`
-	Date        time.Time `json:"date"`
-	Duration    int       `json:"duration"`
-	Address     string    `json:"address"`
-	IsRemote    bool      `json:"is_remote"`
-	Tags        []uint    `json:"tags"`
+	Title       string    `json:"title" binding:"required" example:"Titre de l'annonce"`
+	Description string    `json:"description" example:"Description de l'annonce" binding:"required"`
+	Date        time.Time `json:"date" binding:"required" example:"02/01/2025"`
+	Duration    int       `json:"duration" binding:"required" example:"2"`
+	Address     string    `json:"address" binding:"required" example:"Rue de la Paix 1, 1000 Lausanne"`
+	IsRemote    bool      `json:"is_remote" example:"true" binding:"required"`
+	Tags        []uint    `json:"tags" binding:"required"`
 }
 
 func (a *AnnonceRequest) Bind(r *http.Request) error {
