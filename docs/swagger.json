@@ -863,6 +863,12 @@
         },
         "dbmodel.AnnonceEntry": {
             "type": "object",
+            "required": [
+                "date",
+                "duration",
+                "tags",
+                "title"
+            ],
             "properties": {
                 "address": {
                     "type": "string",
@@ -1169,12 +1175,15 @@
                 "phone": {
                     "type": "string",
                     "example": "0791234567"
+<<<<<<< HEAD
                 },
                 "tags": {
                     "type": "array",
                     "items": {
                         "type": "integer"
                     }
+=======
+>>>>>>> c6ce1fa (:hammer: | update models for swagger)
                 }
             }
         },

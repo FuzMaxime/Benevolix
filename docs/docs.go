@@ -869,6 +869,12 @@ const docTemplate = `{
         },
         "dbmodel.AnnonceEntry": {
             "type": "object",
+            "required": [
+                "date",
+                "duration",
+                "tags",
+                "title"
+            ],
             "properties": {
                 "address": {
                     "type": "string",
