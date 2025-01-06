@@ -27,6 +27,7 @@ func (user *UserEntry) ToModel() *model.UserResponse {
 		tags = append(tags, *tag.ToModel())
 	}
 	return &model.UserResponse{
+		ID:        user.ID,
 		LastName:  user.LastName,
 		FirstName: user.FirstName,
 		Email:     user.Email,

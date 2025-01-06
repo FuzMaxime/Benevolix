@@ -27,6 +27,7 @@ func (candidature *CandidatureEntry) ToModel() *model.CandidatureResponse {
 	// }
 
 	return &model.CandidatureResponse{
+		ID:      candidature.ID,
 		User:    candidature.UserID,
 		Annonce: candidature.AnnonceID,
 		Date:    candidature.Date,
