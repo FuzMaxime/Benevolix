@@ -45,8 +45,12 @@ func (config *CandidatureConfig) CreateCandidatureHandler(w http.ResponseWriter,
 	// Conversion de la chaîne en time.Time
 	parsedTime, _ := time.Parse(layout, req.Date)
 
-	candidatureEntry := &dbmodel.CandidatureEntry{UserID: req.UserID, AnnonceID: req.AnnonceID, Date: parsedTime, Status: req.Status}
-	config.CandidatureRepository.Create(candidatureEntry)
+	candidatureEntry := &dbmodel.CandidatureEntry{UserID: req.UserID, AnnonceID: req.AnnonceID, Date: parsedTime, Status: "Waiting"}
+	if _, err := config.CandidatureRepository.Create(candidatureEntry); err != nil {
+		render.JSON(w, r, map[string]string{"error": "Cannot add new candidature to this annonce"})
+		return
+
+	}
 
 	render.JSON(w, r, candidatureEntry.ToModel())
 }
