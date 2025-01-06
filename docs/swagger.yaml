@@ -7,8 +7,8 @@ definitions:
       password:
         type: string
     required:
-    - email
-    - password
+      - email
+      - password
     type: object
   dbmodel.AnnonceEntry:
     properties:
@@ -17,7 +17,7 @@ definitions:
         type: string
       candidature:
         items:
-          $ref: '#/definitions/dbmodel.CandidatureEntry'
+          $ref: "#/definitions/dbmodel.CandidatureEntry"
         type: array
       date:
         example: 02/01/2025
@@ -33,7 +33,7 @@ definitions:
         type: boolean
       tags:
         items:
-          $ref: '#/definitions/dbmodel.TagEntry'
+          $ref: "#/definitions/dbmodel.TagEntry"
         type: array
       tags_id:
         items:
@@ -42,11 +42,6 @@ definitions:
       title:
         example: Titre de l'annonce
         type: string
-    required:
-    - date
-    - duration
-    - tags
-    - title
     type: object
   dbmodel.CandidatureEntry:
     properties:
@@ -63,13 +58,13 @@ definitions:
     properties:
       annonces:
         items:
-          $ref: '#/definitions/dbmodel.AnnonceEntry'
+          $ref: "#/definitions/dbmodel.AnnonceEntry"
         type: array
       name:
         type: string
       users:
         items:
-          $ref: '#/definitions/dbmodel.UserEntry'
+          $ref: "#/definitions/dbmodel.UserEntry"
         type: array
     type: object
   dbmodel.UserEntry:
@@ -77,7 +72,7 @@ definitions:
       bio:
         type: string
       candidature:
-        $ref: '#/definitions/dbmodel.CandidatureEntry'
+        $ref: "#/definitions/dbmodel.CandidatureEntry"
       city:
         type: string
       email:
@@ -92,7 +87,7 @@ definitions:
         type: string
       tags:
         items:
-          $ref: '#/definitions/dbmodel.TagEntry'
+          $ref: "#/definitions/dbmodel.TagEntry"
         type: array
     type: object
   model.AnnonceRequest:
@@ -120,13 +115,13 @@ definitions:
         example: Titre de l'annonce
         type: string
     required:
-    - address
-    - date
-    - description
-    - duration
-    - is_remote
-    - tags
-    - title
+      - address
+      - date
+      - description
+      - duration
+      - is_remote
+      - tags
+      - title
     type: object
   model.AnnonceResponse:
     properties:
@@ -134,7 +129,7 @@ definitions:
         type: string
       candidatures:
         items:
-          $ref: '#/definitions/model.CandidatureResponse'
+          $ref: "#/definitions/model.CandidatureResponse"
         type: array
       date:
         type: string
@@ -148,7 +143,7 @@ definitions:
         type: boolean
       tags:
         items:
-          $ref: '#/definitions/model.TagResponse'
+          $ref: "#/definitions/model.TagResponse"
         type: array
       title:
         type: string
@@ -166,10 +161,10 @@ definitions:
       user_id:
         type: integer
     required:
-    - annonce_id
-    - date
-    - status
-    - user_id
+      - annonce_id
+      - date
+      - status
+      - user_id
     type: object
   model.CandidatureResponse:
     properties:
@@ -190,7 +185,7 @@ definitions:
         example: Tag name
         type: string
     required:
-    - name
+      - name
     type: object
   model.TagResponse:
     properties:
@@ -230,13 +225,13 @@ definitions:
 =======
 >>>>>>> c6ce1fa (:hammer: | update models for swagger)
     required:
-    - bio
-    - city
-    - email
-    - first_name
-    - last_name
-    - password
-    - phone
+      - bio
+      - city
+      - email
+      - first_name
+      - last_name
+      - password
+      - phone
     type: object
   model.UserResponse:
     properties:
@@ -258,7 +253,7 @@ definitions:
         type: string
       tags:
         items:
-          $ref: '#/definitions/model.TagResponse'
+          $ref: "#/definitions/model.TagResponse"
         type: array
     type: object
 host: localhost:8080
@@ -271,22 +266,22 @@ paths:
   /annonce:
     post:
       consumes:
-      - application/json
+        - application/json
       description: Permet de créer une nouvelle annonce
       parameters:
-      - description: Annonce request
-        in: body
-        name: annonce
-        required: true
-        schema:
-          $ref: '#/definitions/model.AnnonceRequest'
+        - description: Annonce request
+          in: body
+          name: annonce
+          required: true
+          schema:
+            $ref: "#/definitions/model.AnnonceRequest"
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.AnnonceResponse'
+            $ref: "#/definitions/model.AnnonceResponse"
         "400":
           description: Bad Request
           schema:
@@ -295,18 +290,18 @@ paths:
             type: object
       summary: Créer une annonce
       tags:
-      - Annonce
+        - Annonce
   /annonces:
     get:
       description: Permet de récupérer toutes les annonces
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: '#/definitions/model.AnnonceResponse'
+              $ref: "#/definitions/model.AnnonceResponse"
             type: array
         "500":
           description: Internal Server Error
@@ -316,18 +311,18 @@ paths:
             type: object
       summary: Récupérer toutes les annonces
       tags:
-      - Annonce
+        - Annonce
   /annonces/{id}:
     delete:
       description: Permet de supprimer une annonce
       parameters:
-      - description: Annonce ID
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: Annonce ID
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -341,22 +336,22 @@ paths:
             type: object
       summary: Supprimer une annonce
       tags:
-      - Annonce
+        - Annonce
     get:
       description: Permet de récupérer une annonce par son ID
       parameters:
-      - description: Annonce ID
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: Annonce ID
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.AnnonceResponse'
+            $ref: "#/definitions/model.AnnonceResponse"
         "400":
           description: Bad Request
           schema:
@@ -365,30 +360,30 @@ paths:
             type: object
       summary: Récupérer une annonce par son ID
       tags:
-      - Annonce
+        - Annonce
     put:
       consumes:
-      - application/json
+        - application/json
       description: Permet de mettre à jour une annonce
       parameters:
-      - description: Annonce ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Annonce request
-        in: body
-        name: annonce
-        required: true
-        schema:
-          $ref: '#/definitions/model.AnnonceRequest'
+        - description: Annonce ID
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: Annonce request
+          in: body
+          name: annonce
+          required: true
+          schema:
+            $ref: "#/definitions/model.AnnonceRequest"
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.AnnonceResponse'
+            $ref: "#/definitions/model.AnnonceResponse"
         "400":
           description: Bad Request
           schema:
@@ -397,26 +392,26 @@ paths:
             type: object
       summary: Mettre à jour une annonce
       tags:
-      - Annonce
+        - Annonce
   /candidature:
     post:
       consumes:
-      - application/json
+        - application/json
       description: Permet de créer une nouvelle candidature
       parameters:
-      - description: Candidature request
-        in: body
-        name: candidature
-        required: true
-        schema:
-          $ref: '#/definitions/model.CandidatureRequest'
+        - description: Candidature request
+          in: body
+          name: candidature
+          required: true
+          schema:
+            $ref: "#/definitions/model.CandidatureRequest"
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dbmodel.CandidatureEntry'
+            $ref: "#/definitions/dbmodel.CandidatureEntry"
         "400":
           description: Bad Request
           schema:
@@ -425,18 +420,18 @@ paths:
             type: object
       summary: Créer une candidature
       tags:
-      - Candidature
+        - Candidature
   /candidatures:
     get:
       description: Permet de récupérer toutes les candidatures
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: '#/definitions/dbmodel.CandidatureEntry'
+              $ref: "#/definitions/dbmodel.CandidatureEntry"
             type: array
         "500":
           description: Internal Server Error
@@ -446,18 +441,18 @@ paths:
             type: object
       summary: Récupérer toutes les candidatures
       tags:
-      - Candidature
+        - Candidature
   /candidatures/{id}:
     delete:
       description: Permet de supprimer une candidature
       parameters:
-      - description: Candidature ID
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: Candidature ID
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -471,22 +466,22 @@ paths:
             type: object
       summary: Supprimer une candidature
       tags:
-      - Candidature
+        - Candidature
     get:
       description: Permet de récupérer une candidature par son ID
       parameters:
-      - description: Candidature ID
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: Candidature ID
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dbmodel.CandidatureEntry'
+            $ref: "#/definitions/dbmodel.CandidatureEntry"
         "400":
           description: Bad Request
           schema:
@@ -495,30 +490,30 @@ paths:
             type: object
       summary: Récupérer une candidature par son ID
       tags:
-      - Candidature
+        - Candidature
     put:
       consumes:
-      - application/json
+        - application/json
       description: Permet de mettre à jour une candidature
       parameters:
-      - description: Candidature ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Candidature request
-        in: body
-        name: candidature
-        required: true
-        schema:
-          $ref: '#/definitions/model.CandidatureRequest'
+        - description: Candidature ID
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: Candidature request
+          in: body
+          name: candidature
+          required: true
+          schema:
+            $ref: "#/definitions/model.CandidatureRequest"
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dbmodel.CandidatureEntry'
+            $ref: "#/definitions/dbmodel.CandidatureEntry"
         "400":
           description: Bad Request
           schema:
@@ -527,21 +522,21 @@ paths:
             type: object
       summary: Mettre à jour une candidature
       tags:
-      - Candidature
+        - Candidature
   /login:
     post:
       consumes:
-      - application/json
+        - application/json
       description: Permet à un utilisateur de se connecter avec ses identifiants.
       parameters:
-      - description: Login payload
-        in: body
-        name: payload
-        required: true
-        schema:
-          $ref: '#/definitions/authentification.LoginPayload'
+        - description: Login payload
+          in: body
+          name: payload
+          required: true
+          schema:
+            $ref: "#/definitions/authentification.LoginPayload"
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -557,18 +552,18 @@ paths:
             type: object
       summary: Connexion de l'utilisateur
       tags:
-      - Authentification
+        - Authentification
   /tags:
     get:
       description: Permet de récupérer tous les tags
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: '#/definitions/dbmodel.TagEntry'
+              $ref: "#/definitions/dbmodel.TagEntry"
             type: array
         "500":
           description: Internal Server Error
@@ -578,25 +573,25 @@ paths:
             type: object
       summary: Récupérer tous les tags
       tags:
-      - Tag
+        - Tag
     post:
       consumes:
-      - application/json
+        - application/json
       description: Permet de créer un nouveau tag
       parameters:
-      - description: Tag request
-        in: body
-        name: tag
-        required: true
-        schema:
-          $ref: '#/definitions/model.TagRequest'
+        - description: Tag request
+          in: body
+          name: tag
+          required: true
+          schema:
+            $ref: "#/definitions/model.TagRequest"
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dbmodel.TagEntry'
+            $ref: "#/definitions/dbmodel.TagEntry"
         "400":
           description: Bad Request
           schema:
@@ -605,18 +600,18 @@ paths:
             type: object
       summary: Créer un tag
       tags:
-      - Tag
+        - Tag
   /tags/{id}:
     delete:
       description: Permet de supprimer un tag
       parameters:
-      - description: Tag ID
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: Tag ID
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -632,22 +627,22 @@ paths:
             type: object
       summary: Supprimer un tag
       tags:
-      - Tag
+        - Tag
     get:
       description: Permet de récupérer un tag par son ID
       parameters:
-      - description: Tag ID
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: Tag ID
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dbmodel.TagEntry'
+            $ref: "#/definitions/dbmodel.TagEntry"
         "400":
           description: Bad Request
           schema:
@@ -656,30 +651,30 @@ paths:
             type: object
       summary: Récupérer un tag par son ID
       tags:
-      - Tag
+        - Tag
     put:
       consumes:
-      - application/json
+        - application/json
       description: Permet de mettre à jour un tag
       parameters:
-      - description: Tag ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Tag request
-        in: body
-        name: tag
-        required: true
-        schema:
-          $ref: '#/definitions/model.TagRequest'
+        - description: Tag ID
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: Tag request
+          in: body
+          name: tag
+          required: true
+          schema:
+            $ref: "#/definitions/model.TagRequest"
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dbmodel.TagEntry'
+            $ref: "#/definitions/dbmodel.TagEntry"
         "400":
           description: Bad Request
           schema:
@@ -688,26 +683,26 @@ paths:
             type: object
       summary: Mettre à jour un tag
       tags:
-      - Tag
+        - Tag
   /user:
     post:
       consumes:
-      - application/json
+        - application/json
       description: Permet de créer un nouvel utilisateur
       parameters:
-      - description: User request
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/model.UserRequest'
+        - description: User request
+          in: body
+          name: user
+          required: true
+          schema:
+            $ref: "#/definitions/model.UserRequest"
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.UserResponse'
+            $ref: "#/definitions/model.UserResponse"
         "400":
           description: Bad Request
           schema:
@@ -716,18 +711,18 @@ paths:
             type: object
       summary: Créer un utilisateur
       tags:
-      - User
+        - User
   /users:
     get:
       description: Permet de récupérer tous les utilisateurs
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: '#/definitions/dbmodel.UserEntry'
+              $ref: "#/definitions/dbmodel.UserEntry"
             type: array
         "500":
           description: Internal Server Error
@@ -737,18 +732,18 @@ paths:
             type: object
       summary: Récupérer tous les utilisateurs
       tags:
-      - User
+        - User
   /users/{id}:
     delete:
       description: Permet de supprimer un utilisateur
       parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: User ID
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -762,22 +757,22 @@ paths:
             type: object
       summary: Supprimer un utilisateur
       tags:
-      - User
+        - User
     get:
       description: Permet de récupérer un utilisateur par son ID
       parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: User ID
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dbmodel.UserEntry'
+            $ref: "#/definitions/dbmodel.UserEntry"
         "400":
           description: Bad Request
           schema:
@@ -786,30 +781,30 @@ paths:
             type: object
       summary: Récupérer un utilisateur par son ID
       tags:
-      - User
+        - User
     put:
       consumes:
-      - application/json
+        - application/json
       description: Permet de mettre à jour un utilisateur
       parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: User request
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/model.UserRequest'
+        - description: User ID
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: User request
+          in: body
+          name: user
+          required: true
+          schema:
+            $ref: "#/definitions/model.UserRequest"
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.UserResponse'
+            $ref: "#/definitions/model.UserResponse"
         "400":
           description: Bad Request
           schema:
@@ -818,5 +813,5 @@ paths:
             type: object
       summary: Mettre à jour un utilisateur
       tags:
-      - User
+        - User
 swagger: "2.0"
