@@ -11,9 +11,8 @@ type TagRequest struct {
 
 func (a *TagRequest) Bind(r *http.Request) error {
 	if a.Name == "" {
-		return errors.New("name must be there")
+		return errors.New("name must be provided")
 	}
-	// TODO : Implement test here
 	return nil
 }
 

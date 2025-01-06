@@ -34,7 +34,7 @@ func (a *AnnonceRequest) Bind(r *http.Request) error {
 	}
 
 	if a.Duration < 0 {
-		return errors.New("duration must be there")
+		return errors.New("duration must be provided")
 	}
 
 	if len(a.Tags) == 0 {

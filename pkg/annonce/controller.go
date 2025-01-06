@@ -48,7 +48,7 @@ func (config *AnnonceConfig) CreateAnnonceHandler(w http.ResponseWriter, r *http
 		tags = append(tags, *tag)
 	}
 
-	AnnonceEntry := &dbmodel.AnnonceEntry{Title: req.Title, Description: req.Description, Date: req.Date, Duration: req.Duration, Address: req.Address, IsRemote: req.IsRemote, Tags: tags /*Candidature: req.Candidature*/}
+	AnnonceEntry := &dbmodel.AnnonceEntry{Title: req.Title, Description: req.Description, Date: req.Date, Duration: req.Duration, Address: req.Address, IsRemote: req.IsRemote, Tags: tags}
 	config.AnnonceEntryRepository.Create(AnnonceEntry)
 
 	// Create the tags response
@@ -57,7 +57,7 @@ func (config *AnnonceConfig) CreateAnnonceHandler(w http.ResponseWriter, r *http
 		tagsResponse = append(tagsResponse, model.TagResponse{Name: tag.Name})
 	}
 
-	res := &model.AnnonceResponse{Title: req.Title, Description: req.Description, Date: req.Date, Duration: req.Duration, Address: req.Address, IsRemote: req.IsRemote, Tags: tagsResponse /*Candidature: req.Candidature*/}
+	res := &model.AnnonceResponse{Title: req.Title, Description: req.Description, Date: req.Date, Duration: req.Duration, Address: req.Address, IsRemote: req.IsRemote, Tags: tagsResponse}
 	render.JSON(w, r, res)
 }
 
@@ -154,8 +154,6 @@ func (config *AnnonceConfig) UpdateAnnonceHandler(w http.ResponseWriter, r *http
 	AnnonceEntry.Duration = req.Duration
 	AnnonceEntry.Address = req.Address
 	AnnonceEntry.IsRemote = req.IsRemote
-	// AnnonceEntry.Tags = req.Tags
-	// AnnonceEntry.Candidature = req.Candidature
 
 	updatedAnnonce, err := config.AnnonceEntryRepository.Update(AnnonceEntry)
 	if err != nil {

@@ -8,7 +8,7 @@ import (
 	"benevolix/database/dbmodel"
 )
 
-type Config struct { // TODO : replace by valid repository
+type Config struct {
 	AnnonceEntryRepository dbmodel.AnnonceRepository
 	CandidatureRepository  dbmodel.CandidatureRepository
 	TagRepository          dbmodel.TagRepository

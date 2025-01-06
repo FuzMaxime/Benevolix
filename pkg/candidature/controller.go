@@ -180,7 +180,7 @@ func (config *CandidatureConfig) DeleteCandidatureHandler(w http.ResponseWriter,
 	for _, candidature := range entries {
 		if candidature.ID == uint(intcandidatureId) {
 			config.CandidatureRepository.Delete(intcandidatureId)
-			render.JSON(w, r, "Your candidature is delete")
+			render.JSON(w, r, "Your candidature has been deleted")
 			return
 		}
 	}

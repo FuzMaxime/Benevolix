@@ -172,5 +172,5 @@ func (config *UserConfig) DeleteUserHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	render.JSON(w, r, map[string]string{"message": "User deleted!"})
+	render.JSON(w, r, map[string]string{"message": "User deleted"})
 }

@@ -16,9 +16,8 @@ type CandidatureRequest struct {
 func (a *CandidatureRequest) Bind(r *http.Request) error {
 
 	if a.Status != "Waiting" && a.Status != "Refused" && a.Status != "Accepted" {
-		return errors.New("status must be one of this Waiting Refused Accepted")
+		return errors.New("the status must be one of the following: Waiting or Refused or Accepted")
 	}
-	// TODO : Implement test here
 	return nil
 }
 

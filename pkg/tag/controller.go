@@ -126,7 +126,7 @@ Update tag
 // @Success 200 {object} dbmodel.TagEntry
 // @Failure 400 {object} map[string]string
 // @Router /tags/{id} [put]
-func (config *TagConfig) UpdateHandler(w http.ResponseWriter, r *http.Request) { // TO do
+func (config *TagConfig) UpdateHandler(w http.ResponseWriter, r *http.Request) {
 	tagId := chi.URLParam(r, "id")
 
 	if tagId == "" {
@@ -174,7 +174,7 @@ func (config *TagConfig) UpdateHandler(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} map[string]string
 // @Failure 400 {object} map[string]string
 // @Router /tags/{id} [delete]
-func (config *TagConfig) DeleteHandler(w http.ResponseWriter, r *http.Request) { // TO do
+func (config *TagConfig) DeleteHandler(w http.ResponseWriter, r *http.Request) {
 	tagId, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
 		render.JSON(w, r, map[string]string{"error": "Failed to get id from url path"})
@@ -185,5 +185,5 @@ func (config *TagConfig) DeleteHandler(w http.ResponseWriter, r *http.Request) {
 		render.JSON(w, r, map[string]string{"error": "Failed to Delete tag"})
 		return
 	}
-	render.JSON(w, r, map[string]string{"status": "Successfully delete"})
+	render.JSON(w, r, map[string]string{"status": "Successfully deleted"})
 }
