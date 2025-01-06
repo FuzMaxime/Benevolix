@@ -19,13 +19,7 @@ Benevolix est une API pour gérer les annonces, candidatures, utilisateurs et ta
    git clone https://github.com/FuzMaxime/Benevolix.git
    ```
 
-2. Installez les dépendances :
-
-   ```sh
-   go mod download
-   ```
-
-3. Installez Swag :
+2. Installez Swaggo :
    ```sh
    go install github.com/swaggo/swag/cmd/swag@latest
    export PATH=$PATH:$(go env GOPATH)/bin
