@@ -37,6 +37,16 @@ func (config *UserConfig) CreateUserHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
+	var tags []dbmodel.TagEntry
+	for _, tag := range req.Tags {
+		tagEntry, err := config.TagRepository.GetById(tag)
+		if err != nil {
+			render.JSON(w, r, map[string]string{"error": "tag not found"})
+			return
+		}
+		tags = append(tags, *tagEntry)
+	}
+
 	userEntry := &dbmodel.UserEntry{
 		LastName:  req.LastName,
 		FirstName: req.FirstName,
@@ -45,6 +55,7 @@ func (config *UserConfig) CreateUserHandler(w http.ResponseWriter, r *http.Reque
 		Phone:     req.Phone,
 		City:      req.City,
 		Bio:       req.Bio,
+		Tags:      tags,
 	}
 
 	if _, err := config.UserRepository.Create(userEntry); err != nil {

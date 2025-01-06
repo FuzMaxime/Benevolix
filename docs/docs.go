@@ -869,12 +869,6 @@ const docTemplate = `{
         },
         "dbmodel.AnnonceEntry": {
             "type": "object",
-            "required": [
-                "date",
-                "duration",
-                "tags",
-                "title"
-            ],
             "properties": {
                 "address": {
                     "type": "string",
@@ -1181,6 +1175,12 @@ const docTemplate = `{
                 "phone": {
                     "type": "string",
                     "example": "0791234567"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 }
             }
         },

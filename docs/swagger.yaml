@@ -42,11 +42,6 @@ definitions:
       title:
         example: Titre de l'annonce
         type: string
-    required:
-    - date
-    - duration
-    - tags
-    - title
     type: object
   dbmodel.CandidatureEntry:
     properties:
@@ -222,6 +217,10 @@ definitions:
       phone:
         example: "0791234567"
         type: string
+      tags:
+        items:
+          type: integer
+        type: array
     required:
     - bio
     - city
