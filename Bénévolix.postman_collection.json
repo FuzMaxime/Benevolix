@@ -1,0 +1,487 @@
+{
+	"info": {
+		"_postman_id": "cfdd2a35-6e48-4814-951e-c000aa3037f5",
+		"name": "Bénévolix",
+		"description": "Collection des tests CRUD pour les :\n\n- Users\n    \n- Annonces\n    \n- Candidatures\n    \n- Tags",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "39303128",
+		"_collection_link": "https://benevolix-5260.postman.co/workspace/Benevolix-Workspace~ab147f11-f314-40c7-8f69-1bf3272c8dcc/collection/32234374-cfdd2a35-6e48-4814-951e-c000aa3037f5?action=share&source=collection_link&creator=39303128"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\": \"John\",\r\n    \"last_name\": \"Doe\",\r\n    \"email\": \"john.doe@examplee.com\",\r\n    \"password\": \"Pa$$w0rd\",\r\n    \"phone\": \"06 06 06 06 40\",\r\n    \"city\": \"Nantes\",\r\n    \"Bio\": \"Tregastell mervel uhel sav speredek pignat yaouankiz. Amañ kuzuliañ ac’hanoc’h keit askorn beleg Liger yenijenn bodet\",\r\n    \"Tags\": [\r\n        1,\r\n        2\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users/"
+					},
+					"response": []
+				},
+				{
+					"name": "FindByID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/users/2"
+					},
+					"response": []
+				},
+				{
+					"name": "FindAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/users/"
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\": \"Marc\",\r\n    \"last_name\": \"Doe\",\r\n    \"email\": \"marc.doe@example.com\",\r\n    \"password\": \"Pa$$w0rd\",\r\n    \"phone\":\"06 06 06 06 06\",\r\n    \"city\": \"Paris\",\r\n    \"Bio\": \"Tregastell mervel uhel sav speredek pignat yaouankiz. Amañ kuzuliañ ac’hanoc’h keit askorn beleg Liger yenijenn bodet\",\r\n    \"Tags\": [\r\n        1,\r\n        2,\r\n        4,\r\n        5\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{base_url}}/users/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "candidatures",
+			"item": [
+				{
+					"name": "FindAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/candidatures/"
+					},
+					"response": []
+				},
+				{
+					"name": "FindByID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/candidatures/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": 1,\r\n    \"annonce_id\": 1,\r\n    \"date\": \"2025-05-05\",\r\n    \"status\": \"Waiting\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/candidatures/"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{base_url}}/candidatures/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": 1,\r\n    \"annonce_id\": 1,\r\n    \"date\": \"2025-05-05\",\r\n    \"status\": \"Refused\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/candidatures/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "annonces",
+			"item": [
+				{
+					"name": "FindAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/annonces/"
+					},
+					"response": []
+				},
+				{
+					"name": "FindByID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/annonces/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{base_url}}/annonces/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Participe à l'actualisation de notre ville\",\r\n    \"description\": \"Talvoudus an rumm pa votez leun ac’hanout amezeg hevelep, klañv gwec’h koustañ gouel oan da war ganin Pleiber-Krist, gentel tu bemnoz ar hep hepken hag. Mall outi dek diskar kegin Atlantel itron Sant-Gwenole pevar, gaer pepr brudet mouezh a Sant-Maloù poull warno Aradon, c’hroaz alc’houez diwezhañ hadañ sac’h lazhañ te. Ya pred a lein ampart leskiñ Baz hevelep hor.\",\r\n    \"date\": \"2025-02-02T15:04:05Z\",\r\n    \"duration\": 120,\r\n    \"address\": \"8 rue du général Hubert Bonneau, 44000 Nantes, France\",\r\n    \"is_remote\": true,\r\n    \"tags\": [1, 2]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/annonces/"
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Webmaster senior site régional\",\r\n    \"description\": \"Logoden biniou degemer mat an penn ar bed eürus, aod gwelout kribañ ur ganti patatez dra vilin darn, eeun kas kenañ enebour war ha pepr. Boultrenn reizh maouez tregas tasenn Pembo tra Gerveur stal, he kelien lein kreñv gaoued roc’h evidon goulenn pa, Tregastell mervel uhel sav speredek pignat yaouankiz.\",\r\n    \"Date\": \"2025-02-02T15:04:05Z\",\r\n    \"duration\": 60,\r\n    \"address\": \"8 rue du général Hubert Bonneau, 44000 Nantes, France\",\r\n    \"is_remote\": false,\r\n    \"tags\": [\r\n        1,\r\n        5\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/annonces/9"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "tags",
+			"item": [
+				{
+					"name": "FindAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/tags/"
+					},
+					"response": []
+				},
+				{
+					"name": "FindByID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/tags/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{base_url}}/tags/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Informatique\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/tags/"
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Sport\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/tags/2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"const token = response.token;\r",
+									"\r",
+									"if (token) {\r",
+									"    pm.collectionVariables.set(\"token\", token);\r",
+									"\r",
+									"    console.log(\"Token enregistré dans la collection :\", token);\r",
+									"} else {\r",
+									"    console.error(\"Token introuvable dans la réponse !\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"john.doe@example.com\",\r\n    \"password\": \"Pa$$w0rd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/auth"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwiZXhwIjoxNzM2MTYyMDkzfQ.olPunPuZjIw1AB9E35XFBLTWOvuigDnpwBfDm2SiDk8"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080/api/v1"
+		},
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}

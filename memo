@@ -1,9 +1,0 @@
-System d'adresse à revoir :
-
-- séparer les champs (pays, ville , ...)
-- utilisation d'api (api gouvernement pour addresse)
-- stocker les coordonées
-
-Candidature dans les annonces
-
-Stocker les id dans le token et pas les emails
