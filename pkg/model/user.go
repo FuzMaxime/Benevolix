@@ -30,11 +30,11 @@ func (a *UserRequest) Bind(r *http.Request) error {
 		}
 	}
 
-	if a.Phone == "" || len(a.Phone) < 10 {
+	if a.Phone == "" {
 		return errors.New("phone must be provided")
 	}
 
-	if a.Email == "" || len(a.Email) < 150 {
+	if a.Email == "" {
 		return errors.New("email must be provided")
 	}
 	_, err := mail.ParseAddress(a.Email)
@@ -42,11 +42,11 @@ func (a *UserRequest) Bind(r *http.Request) error {
 		return errors.New("email must be at good format, like this : example@gmail.com")
 	}
 
-	if a.Password == "" || len(a.Password) < 100 {
+	if a.Password == "" {
 		return errors.New("password must be provided")
 	}
 
-	if a.City == "" || len(a.City) < 100 {
+	if a.City == "" {
 		return errors.New("city must be provided")
 	}
 	for _, r := range a.City {
@@ -55,7 +55,7 @@ func (a *UserRequest) Bind(r *http.Request) error {
 		}
 	}
 
-	if a.Bio == "" || len(a.Bio) < 150 {
+	if a.Bio == "" {
 		return errors.New("biography must be provided")
 	}
 	return nil
