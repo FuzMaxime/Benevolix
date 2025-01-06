@@ -6,7 +6,7 @@ import (
 )
 
 type TagRequest struct {
-	Name string `json:"name"`
+	Name string `json:"name" binding:"required" example:"Tag name"`
 }
 
 func (a *TagRequest) Bind(r *http.Request) error {

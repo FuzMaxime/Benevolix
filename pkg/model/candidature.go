@@ -7,10 +7,10 @@ import (
 )
 
 type CandidatureRequest struct {
-	UserID    uint   `json:"user_id"`
-	AnnonceID uint   `json:"annonce_id"`
-	Date      string `json:"date"`
-	Status    string `json:"status"`
+	UserID    uint   `json:"user_id" binding:"required"`
+	AnnonceID uint   `json:"annonce_id" binding:"required"`
+	Date      string `json:"date" binding:"required" example:"02/01/2025"`
+	Status    string `json:"status" binding:"required" example:"Waiting"`
 }
 
 func (a *CandidatureRequest) Bind(r *http.Request) error {
