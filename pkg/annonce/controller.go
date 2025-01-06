@@ -147,6 +147,15 @@ func (config *AnnonceConfig) UpdateAnnonceHandler(w http.ResponseWriter, r *http
 		render.JSON(w, r, map[string]string{"error": "Invalid Annonce update request loaded"})
 		return
 	}
+	var tags []dbmodel.TagEntry
+	for _, tagId := range req.Tags {
+		tag, err := config.TagRepository.GetById(tagId)
+		if err != nil {
+			render.JSON(w, r, map[string]string{"error": "Tag not found"})
+			return
+		}
+		tags = append(tags, *tag)
+	}
 
 	AnnonceEntry.Title = req.Title
 	AnnonceEntry.Description = req.Description
@@ -154,8 +163,7 @@ func (config *AnnonceConfig) UpdateAnnonceHandler(w http.ResponseWriter, r *http
 	AnnonceEntry.Duration = req.Duration
 	AnnonceEntry.Address = req.Address
 	AnnonceEntry.IsRemote = req.IsRemote
-	// AnnonceEntry.Tags = req.Tags
-	// AnnonceEntry.Candidature = req.Candidature
+	AnnonceEntry.Tags = tags
 
 	updatedAnnonce, err := config.AnnonceEntryRepository.Update(AnnonceEntry)
 	if err != nil {
@@ -163,7 +171,7 @@ func (config *AnnonceConfig) UpdateAnnonceHandler(w http.ResponseWriter, r *http
 		return
 	}
 
-	render.JSON(w, r, updatedAnnonce)
+	render.JSON(w, r, updatedAnnonce.ToModel())
 }
 
 // DeleteAnnonceHandler gère la suppression d'une annonce
