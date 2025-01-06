@@ -10,8 +10,8 @@ import (
 // CandidatureEntry représente une candidature dans la base de données
 type CandidatureEntry struct {
 	gorm.Model `swaggerignore:"true"` // Ignore gorm.Model pour Swagger
-	UserID     uint                   `json:"user_id"`
-	AnnonceID  uint                   `json:"annonce_id"`
+	UserID     uint                   `json:"user_id" gorm:"index:AnnonceID,unique"`
+	AnnonceID  uint                   `json:"annonce_id" gorm:"index:UserId,unique"`
 	Date       time.Time              `json:"date"`
 	Status     string                 `json:"status"`
 }

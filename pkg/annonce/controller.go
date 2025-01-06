@@ -51,14 +51,7 @@ func (config *AnnonceConfig) CreateAnnonceHandler(w http.ResponseWriter, r *http
 	AnnonceEntry := &dbmodel.AnnonceEntry{Title: req.Title, Description: req.Description, Date: req.Date, Duration: req.Duration, Address: req.Address, IsRemote: req.IsRemote, Tags: tags}
 	config.AnnonceEntryRepository.Create(AnnonceEntry)
 
-	// Create the tags response
-	var tagsResponse []model.TagResponse
-	for _, tag := range tags {
-		tagsResponse = append(tagsResponse, model.TagResponse{Name: tag.Name})
-	}
-
-	res := &model.AnnonceResponse{Title: req.Title, Description: req.Description, Date: req.Date, Duration: req.Duration, Address: req.Address, IsRemote: req.IsRemote, Tags: tagsResponse}
-	render.JSON(w, r, res)
+	render.JSON(w, r, AnnonceEntry.ToModel())
 }
 
 // GetAllAnnoncesHandler gère la récupération de toutes les annonces
@@ -114,7 +107,7 @@ func (config *AnnonceConfig) GetOneAnnonceHandler(w http.ResponseWriter, r *http
 		render.JSON(w, r, map[string]string{"error": "Annonce not found"})
 		return
 	}
-	render.JSON(w, r, AnnonceTarget)
+	render.JSON(w, r, AnnonceTarget.ToModel())
 }
 
 // UpdateAnnonceHandler gère la mise à jour d'une annonce
@@ -147,6 +140,15 @@ func (config *AnnonceConfig) UpdateAnnonceHandler(w http.ResponseWriter, r *http
 		render.JSON(w, r, map[string]string{"error": "Invalid Annonce update request loaded"})
 		return
 	}
+	var tags []dbmodel.TagEntry
+	for _, tagId := range req.Tags {
+		tag, err := config.TagRepository.GetById(tagId)
+		if err != nil {
+			render.JSON(w, r, map[string]string{"error": "Tag not found"})
+			return
+		}
+		tags = append(tags, *tag)
+	}
 
 	AnnonceEntry.Title = req.Title
 	AnnonceEntry.Description = req.Description
@@ -154,6 +156,7 @@ func (config *AnnonceConfig) UpdateAnnonceHandler(w http.ResponseWriter, r *http
 	AnnonceEntry.Duration = req.Duration
 	AnnonceEntry.Address = req.Address
 	AnnonceEntry.IsRemote = req.IsRemote
+	AnnonceEntry.Tags = tags
 
 	updatedAnnonce, err := config.AnnonceEntryRepository.Update(AnnonceEntry)
 	if err != nil {
@@ -161,7 +164,7 @@ func (config *AnnonceConfig) UpdateAnnonceHandler(w http.ResponseWriter, r *http
 		return
 	}
 
-	render.JSON(w, r, updatedAnnonce)
+	render.JSON(w, r, updatedAnnonce.ToModel())
 }
 
 // DeleteAnnonceHandler gère la suppression d'une annonce
