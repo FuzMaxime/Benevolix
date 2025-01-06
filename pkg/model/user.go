@@ -15,6 +15,7 @@ type UserRequest struct {
 	Password  string `json:"password" example:"password" binding:"required"`
 	City      string `json:"city" example:"Nantes" binding:"required"`
 	Bio       string `json:"bio" example:"Je suis un étudiant en informatique" binding:"required"`
+	Tags      []uint `json:"tags"`
 }
 
 func (a *UserRequest) Bind(r *http.Request) error {

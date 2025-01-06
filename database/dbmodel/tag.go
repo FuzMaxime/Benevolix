@@ -8,9 +8,9 @@ import (
 
 type TagEntry struct {
 	gorm.Model `swaggerignore:"true"` // Ignore gorm.Model pour Swagger
-	Name     string
-	Annonces []*AnnonceEntry `gorm:"many2many:annonce_tags"`
-	Users    []*UserEntry    `gorm:"many2many:user_tags"`
+	Name       string                 `gorm:"not null; uniqueIndex"`
+	Annonces   []*AnnonceEntry        `gorm:"many2many:annonce_tags"`
+	Users      []*UserEntry           `gorm:"many2many:user_tags"`
 }
 
 func (tag *TagEntry) ToModel() *model.TagResponse {

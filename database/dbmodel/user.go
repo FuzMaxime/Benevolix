@@ -9,16 +9,16 @@ import (
 )
 
 type UserEntry struct {
-	gorm.Model `swaggerignore:"true"` // Ignore gorm.Model pour Swagger
-	LastName    string            `json:"last_name"`
-	FirstName   string            `json:"first_name"`
-	Phone       string            `json:"phone" gorm:"uniqueIndex"`
-	Email       string            `json:"email" gorm:"uniqueIndex"`
-	Password    string            `json:"password"`
-	City        string            `json:"city"`
-	Bio         string            `json:"bio"`
-	Tags        []*TagEntry       `gorm:"many2many:user_tags"`
-	Candidature *CandidatureEntry `gorm:"foreignkey:UserID;references:ID"`
+	gorm.Model  `swaggerignore:"true"` // Ignore gorm.Model pour Swagger
+	LastName    string                 `json:"last_name" gorm:"not null"`
+	FirstName   string                 `json:"first_name" gorm:"not null"`
+	Phone       string                 `json:"phone" gorm:"uniqueIndex; not null"`
+	Email       string                 `json:"email" gorm:"uniqueIndex; not null"`
+	Password    string                 `json:"password" gorm:"not null"`
+	City        string                 `json:"city" gorm:"not null"`
+	Bio         string                 `json:"bio" gorm:"not null"`
+	Tags        []TagEntry             `gorm:"many2many:user_tags"`
+	Candidature *CandidatureEntry      `gorm:"foreignkey:UserID;references:ID"`
 }
 
 func (user *UserEntry) ToModel() *model.UserResponse {
