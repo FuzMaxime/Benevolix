@@ -16,7 +16,7 @@ Benevolix est une API pour gérer les annonces, candidatures, utilisateurs et ta
 1. Clonez le dépôt :
 
    ```sh
-   git clone <URL_DU_DEPOT>
+   git clone https://github.com/FuzMaxime/Benevolix.git
    ```
 
 2. Installez les dépendances :
