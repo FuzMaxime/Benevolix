@@ -14,6 +14,7 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/cors"
 
 	_ "benevolix/docs" // Importer les fichiers Swagger générés
 
@@ -30,8 +31,15 @@ func Routes(configuration *config.Config) *chi.Mux {
 	router := chi.NewRouter()
 
 	// Middlewares
-	router.Use(middleware.Logger)   // Journalisation des requêtes
+	router.Use(middleware.Logger)    // Journalisation des requêtes
 	router.Use(middleware.Recoverer) // Récupération des panics
+
+	router.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:56985", "http://127.0.0.1:56985"}, // Autoriser le frontend Flutter
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		AllowCredentials: true, // Si tu utilises des cookies ou des tokens JWT
+	}))
 
 	// Swagger
 	router.Get("/swagger/*", httpSwagger.WrapHandler) // Documentation Swagger
@@ -54,7 +62,7 @@ func openBrowser(url string) {
 	case "windows":
 		err = exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
 	case "linux":
-		err = exec.Command("xdg-open", url).Start() 
+		err = exec.Command("xdg-open", url).Start()
 	default:
 		log.Println("Impossible d'ouvrir automatiquement le navigateur.")
 	}
@@ -86,7 +94,7 @@ func main() {
 	log.Printf("Serveur lancé sur %s\n", address)
 
 	// Ouverture du Swagger dans le navigateur
-	go openBrowser( address + "/swagger/index.html")
+	go openBrowser(address + "/swagger/index.html")
 
 	if err := http.ListenAndServe("localhost:8080", router); err != nil {
 		log.Fatalf("Erreur du serveur : %v", err)
