@@ -15,14 +15,14 @@ func GenerateToken(secret string, userId uint) (string, error) {
 	return token.SignedString([]byte(secret))
 }
 
-func ParseToken(secret, tokenString string) (string, error) {
+func ParseToken(secret, tokenString string) (float64, error) {
 	tokenString = strings.TrimPrefix(tokenString, "Bearer ")
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return []byte(secret), nil
 	})
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		return claims["userId"].(string), nil
+		return claims["userId"].(float64), nil
 	}
-	return "", err
+	return 0, err
 }
