@@ -12,7 +12,7 @@ type UserEntry struct {
 	gorm.Model  `swaggerignore:"true"` // Ignore gorm.Model pour Swagger
 	LastName    string                 `json:"last_name" gorm:"not null"`
 	FirstName   string                 `json:"first_name" gorm:"not null"`
-	Phone       string                 `json:"phone" gorm:"uniqueIndex; not null"`
+	Phone       string                 `json:"phone" gorm:"not null"`
 	Email       string                 `json:"email" gorm:"uniqueIndex; not null"`
 	Password    string                 `json:"password" gorm:"not null"`
 	City        string                 `json:"city" gorm:"not null"`
