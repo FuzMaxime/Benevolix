@@ -4,6 +4,7 @@ import (
 	"benevolix/config"
 	"benevolix/database/dbmodel"
 	"benevolix/pkg/model"
+	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -183,4 +184,51 @@ func (config *UserConfig) DeleteUserHandler(w http.ResponseWriter, r *http.Reque
 	}
 
 	render.JSON(w, r, map[string]string{"message": "User deleted"})
+}
+
+// UpdatePasswordHandler gère la mise à jour du mot de passe d'un utilisateur
+// @Summary Mettre à jour le mot de passe d'un utilisateur
+// @Description Permet de mettre à jour le mot de passe d'un utilisateur
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param id path int true "User ID"
+// @Param password body map[string]string true "Password request"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Router /users/{id}/password [put]
+func (config *UserConfig) UpdatePasswordHandler(w http.ResponseWriter, r *http.Request) {
+	userId := chi.URLParam(r, "id")
+	intUserId, err := strconv.Atoi(userId)
+	if err != nil {
+			render.JSON(w, r, map[string]string{"error": "Invalid user ID"})
+			return
+	}
+
+	userEntry, err := config.UserRepository.GetById(uint(intUserId))
+	if err != nil {
+			render.JSON(w, r, map[string]string{"error": "User not found"})
+			return
+	}
+
+	var req map[string]string
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		render.JSON(w, r, map[string]string{"error": "Invalid request"})
+		return
+	}
+
+	newPassword, ok := req["password"]
+	if !ok || newPassword == "" {
+			render.JSON(w, r, map[string]string{"error": "Password is required"})
+			return
+	}
+
+	userEntry.Password = newPassword
+
+	if _, err := config.UserRepository.Update(userEntry); err != nil {
+			render.JSON(w, r, map[string]string{"error": "Failed to update password"})
+			return
+	}
+
+	render.JSON(w, r, map[string]string{"message": "Password updated successfully"})
 }
