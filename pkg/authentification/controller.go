@@ -21,8 +21,8 @@ func New(configuration *config.Config) *LoginConfig {
 
 // LoginPayload représente le payload pour la connexion
 type LoginPayload struct {
-    Email    string `json:"email" binding:"required"`
-    Password string `json:"password" binding:"required"`
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"password" binding:"required"`
 }
 
 // @Summary Connexion de l'utilisateur
@@ -34,13 +34,14 @@ type LoginPayload struct {
 // @Success 200 {object} map[string]string
 // @Failure 400 {object} map[string]string
 // @Router /login [post]
-// {
-// 	"email": example@example.com"
-// 	"password": P@ssw0rd"
-// }
+//
+//	{
+//		"email": example@example.com"
+//		"password": P@ssw0rd"
+//	}
 func (config *LoginConfig) Login(w http.ResponseWriter, r *http.Request) {
 	var payload LoginPayload
-	
+
 	json.NewDecoder(r.Body).Decode(&payload)
 	user, exist := config.UserRepository.GetUserByEmail(payload.Email)
 
@@ -49,12 +50,12 @@ func (config *LoginConfig) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := GenerateToken(os.Getenv("API_Key"), payload.Email)
+	token, err := GenerateToken(os.Getenv("API_Key"), user.ID)
 	if err != nil {
 		http.Error(w, "Failed to generate token", http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]string{"token": token})
+	json.NewEncoder(w).Encode(map[string]interface{}{"token": token, "userId": user.ID})
 }

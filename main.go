@@ -44,6 +44,13 @@ func Routes(configuration *config.Config) *chi.Mux {
 	router.Use(middleware.Logger)    // Journalisation des requêtes
 	router.Use(middleware.Recoverer) // Récupération des panics
 
+	router.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:56985", "http://127.0.0.1:56985"}, // Autoriser le frontend Flutter
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		AllowCredentials: true, // Si tu utilises des cookies ou des tokens JWT
+	}))
+
 	// Swagger
 	router.Get("/swagger/*", httpSwagger.WrapHandler) // Documentation Swagger
 
