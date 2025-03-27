@@ -97,7 +97,7 @@ func (r *userRepository) Delete(id int) error {
 
 func (r *userRepository) GetUserByEmail(email string) (*UserEntry, error) {
 	var entries []*UserEntry
-	if err := r.db.Preload("Tags").Raw("SELECT * FROM user_entries WHERE email = ?;", email).Scan(&entries).Error; err != nil {
+	if err := r.db.Preload("Tags").Raw("SELECT * FROM user_entries WHERE email = ? AND deleted_at IS NULL;", email).Scan(&entries).Error; err != nil {
 		return nil, err
 	} else if len(entries) == 0 {
 		return nil, errors.New("no email found")
