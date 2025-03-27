@@ -20,6 +20,7 @@ func Routes(configuration *config.Config) *chi.Mux {
 		r.Get("/{id}", userConfig.GetByIdUserHandler)
 
 		r.Put("/{id}", userConfig.UpdateUserHandler)
+		r.Put("/{id}/password", userConfig.UpdatePasswordHandler)
 
 		r.Delete("/{id}", userConfig.DeleteUserHandler)
 
