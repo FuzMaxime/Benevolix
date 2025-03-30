@@ -17,6 +17,7 @@ func Routes(configuration *config.Config) *chi.Mux {
 
 		r.Get("/", tagConfig.GetTagsHandler)
 		r.Get("/{id}", tagConfig.GetTagHandler)
+		r.Get("/{name}", tagConfig.GetTagByNameHandler)
 		r.Post("/", tagConfig.AddTagHandler)
 		r.Put("/{id}", tagConfig.UpdateHandler)
 		r.Delete("/{id}", tagConfig.DeleteHandler)

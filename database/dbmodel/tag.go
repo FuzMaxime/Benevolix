@@ -24,6 +24,7 @@ type TagRepository interface {
 	Create(entry *TagEntry) (*TagEntry, error)
 	GetAll() ([]*TagEntry, error)
 	GetById(id uint) (*TagEntry, error)
+	GetByName(name string) (*TagEntry, error)
 	Update(entry *TagEntry) (*TagEntry, error)
 	Delete(id int) error
 }
@@ -57,6 +58,18 @@ func (r *tagRepository) GetById(id uint) (*TagEntry, error) {
 		return nil, err
 	}
 	return entrie, nil
+}
+
+func (r *tagRepository) GetByName(name string) (*TagEntry, error) {
+	var entries []*TagEntry
+	if err := r.db.Raw("Select * FROM tag_entries WHERE name = ? AND deleted_at IS NULL;", name).Scan(&entries).Error; err != nil {
+		return nil, err
+	}
+	if len(entries) == 0 {
+		return nil, gorm.ErrRecordNotFound
+	}
+
+	return entries[0], nil
 }
 
 func (r *tagRepository) Update(entry *TagEntry) (*TagEntry, error) {

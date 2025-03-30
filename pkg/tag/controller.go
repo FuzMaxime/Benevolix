@@ -73,6 +73,22 @@ func (config *TagConfig) GetTagHandler(w http.ResponseWriter, r *http.Request) {
 	render.JSON(w, r, tag.ToModel())
 }
 
+func (config *TagConfig) GetTagByNameHandler(w http.ResponseWriter, r *http.Request) {
+	name := chi.URLParam(r, "name")
+
+	if name == "" {
+		render.JSON(w, r, map[string]string{"error": "Tag ID is required"})
+		return
+	}
+
+	tag, err := config.TagRepository.GetByName(name)
+	if err != nil {
+		render.JSON(w, r, map[string]string{"error": "Failed to retrieve history"})
+		return
+	}
+	render.JSON(w, r, tag.ToModel())
+}
+
 // POST
 
 // AddTagHandler gère la création d'un tag
@@ -85,9 +101,10 @@ func (config *TagConfig) GetTagHandler(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} dbmodel.TagEntry
 // @Failure 400 {object} map[string]string
 // @Router /tags [post]
-// {
-// 	"name": "example"
-// }
+//
+//	{
+//		"name": "example"
+//	}
 func (config *TagConfig) AddTagHandler(w http.ResponseWriter, r *http.Request) {
 	req := &model.TagRequest{}
 	if err := render.Bind(r, req); err != nil {
