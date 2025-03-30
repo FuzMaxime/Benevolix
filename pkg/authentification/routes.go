@@ -14,7 +14,7 @@ func Routes(configuration *config.Config) *chi.Mux {
 	router.Post("/", authConfig.Login)
 	router.Get("/protected", func(w http.ResponseWriter, r *http.Request) {
 		user := GetUserFromContext(r.Context())
-		if user == "" {
+		if user == 0 {
 			w.Write([]byte("Your are not register !!"))
 			return
 		}

@@ -13,7 +13,7 @@ type AnnonceRequest struct {
 	Duration    int       `json:"duration" binding:"required" example:"2"`
 	Address     string    `json:"address" binding:"required" example:"Rue de la Paix 1, 1000 Lausanne"`
 	IsRemote    bool      `json:"is_remote" example:"true" binding:"required"`
-	Tags        []uint    `json:"tags" binding:"required"`
+	Tags        []uint    `json:"tags"`
 }
 
 func (a *AnnonceRequest) Bind(r *http.Request) error {
@@ -37,14 +37,12 @@ func (a *AnnonceRequest) Bind(r *http.Request) error {
 		return errors.New("duration must be provided")
 	}
 
-	if len(a.Tags) == 0 {
-		return errors.New("at least one tag must be provided")
-	}
 	return nil
 }
 
 type AnnonceResponse struct {
 	ID          uint      `json:"id"`
+	OwnerID     uint      `json:"owner_id"`
 	Title       string    `json:"title"`
 	Description string    `json:"description"`
 	Date        time.Time `json:"date"`

@@ -3,6 +3,7 @@ package annonce
 import (
 	"benevolix/config"
 	"benevolix/database/dbmodel"
+	"benevolix/pkg/authentification"
 	"benevolix/pkg/model"
 	"net/http"
 	"strconv"
@@ -44,23 +45,23 @@ func New(configuration *config.Config) *AnnonceConfig {
 func (config *AnnonceConfig) CreateAnnonceHandler(w http.ResponseWriter, r *http.Request) {
 	req := &model.AnnonceRequest{}
 	if err := render.Bind(r, req); err != nil {
-		print(err.Error())
 		render.JSON(w, r, map[string]string{"error": "Invalid Annonce creation request loaded"})
 		return
 	}
-
-	// Check if tags exist in the database before creating the annonce
 	var tags []dbmodel.TagEntry
-	for _, tagId := range req.Tags {
-		tag, err := config.TagRepository.GetById(tagId)
-		if err != nil {
-			render.JSON(w, r, map[string]string{"error": "Tag not found"})
-			return
+	if req.Tags != nil && len(req.Tags) != 0 {
+		// Check if tags exist in the database before creating the annonce
+		for _, tagId := range req.Tags {
+			tag, err := config.TagRepository.GetById(tagId)
+			if err != nil {
+				render.JSON(w, r, map[string]string{"error": "Tag not found"})
+				return
+			}
+			tags = append(tags, *tag)
 		}
-		tags = append(tags, *tag)
 	}
 
-	AnnonceEntry := &dbmodel.AnnonceEntry{Title: req.Title, Description: req.Description, Date: req.Date, Duration: req.Duration, Address: req.Address, IsRemote: req.IsRemote, Tags: tags}
+	AnnonceEntry := &dbmodel.AnnonceEntry{OwnerID: authentification.GetUserFromContext(r.Context()), Title: req.Title, Description: req.Description, Date: req.Date, Duration: req.Duration, Address: req.Address, IsRemote: req.IsRemote, Tags: tags}
 	config.AnnonceEntryRepository.Create(AnnonceEntry)
 	render.JSON(w, r, AnnonceEntry.ToModel())
 }
@@ -76,7 +77,7 @@ func (config *AnnonceConfig) CreateAnnonceHandler(w http.ResponseWriter, r *http
 func (config *AnnonceConfig) GetAllAnnoncesHandler(w http.ResponseWriter, r *http.Request) {
 	entries, err := config.AnnonceEntryRepository.GetAll()
 	if err != nil {
-		render.JSON(w, r, map[string]string{"error": "Failed to retrieve history"})
+		render.JSON(w, r, map[string]string{"error": "Failed to get all annonces"})
 		return
 	}
 	var annoncesResponse []model.AnnonceResponse

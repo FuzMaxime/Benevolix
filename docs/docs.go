@@ -849,6 +849,71 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/users/{id}/password": {
+            "put": {
+                "description": "Permet de mettre à jour le mot de passe d'un utilisateur après vérification du mot de passe actuel",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Mettre à jour le mot de passe d'un utilisateur",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Password request",
+                        "name": "password",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -895,6 +960,9 @@ const docTemplate = `{
                 "is_remote": {
                     "type": "boolean",
                     "example": true
+                },
+                "owner_id": {
+                    "type": "integer"
                 },
                 "tags": {
                     "type": "array",
@@ -957,6 +1025,9 @@ const docTemplate = `{
         "dbmodel.UserEntry": {
             "type": "object",
             "properties": {
+                "annonce": {
+                    "$ref": "#/definitions/dbmodel.AnnonceEntry"
+                },
                 "bio": {
                     "type": "string"
                 },
@@ -997,7 +1068,6 @@ const docTemplate = `{
                 "description",
                 "duration",
                 "is_remote",
-                "tags",
                 "title"
             ],
             "properties": {
@@ -1059,6 +1129,9 @@ const docTemplate = `{
                 },
                 "is_remote": {
                     "type": "boolean"
+                },
+                "owner_id": {
+                    "type": "integer"
                 },
                 "tags": {
                     "type": "array",

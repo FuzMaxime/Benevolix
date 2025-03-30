@@ -19,6 +19,7 @@ type UserEntry struct {
 	Bio         string                 `json:"bio" gorm:"not null"`
 	Tags        []TagEntry             `gorm:"many2many:user_tags"`
 	Candidature *CandidatureEntry      `gorm:"foreignkey:UserID;references:ID"`
+	Annonce     *AnnonceEntry          `gorm:"foreignkey:OwnerID;references:ID"`
 }
 
 func (user *UserEntry) ToModel() *model.UserResponse {

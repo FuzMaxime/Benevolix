@@ -15,8 +15,9 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/cors"
+	"github.com/joho/godotenv"
 
-	_ "benevolix/docs" // Importer les fichiers Swagger générés
+	_ "benevolix/docs"
 
 	httpSwagger "github.com/swaggo/http-swagger"
 )
@@ -83,6 +84,8 @@ func openBrowser(url string) {
 }
 
 func main() {
+	godotenv.Load()
+
 	// Génération des fichiers Swagger
 	log.Println("Génération automatique de la documentation Swagger...")
 	cmd := exec.Command("swag", "init")

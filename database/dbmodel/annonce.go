@@ -10,6 +10,7 @@ import (
 type AnnonceEntry struct {
 	gorm.Model `swaggerignore:"true"` // Ignore gorm.Model pour Swagger
 
+	OwnerID     uint               `json:"owner_id" gorm:"not null"`
 	Title       string             `json:"title" gorm:"not null" example:"Titre de l'annonce"`
 	Description string             `json:"description" example:"Description de l'annonce"`
 	Date        time.Time          `json:"date" gorm:"not null" example:"02/01/2025"`
@@ -41,6 +42,7 @@ func (annonce *AnnonceEntry) ToModel() *model.AnnonceResponse {
 
 	return &model.AnnonceResponse{
 		ID:           annonce.ID,
+		OwnerID:      annonce.OwnerID,
 		Title:        annonce.Title,
 		Description:  annonce.Description,
 		Date:         annonce.Date,
