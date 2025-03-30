@@ -9,7 +9,7 @@ import (
 type AnnonceRequest struct {
 	Title       string    `json:"title" binding:"required" example:"Titre de l'annonce"`
 	Description string    `json:"description" example:"Description de l'annonce" binding:"required"`
-	Date        time.Time `json:"date" binding:"required" example:"02/01/2025"`
+	Date        time.Time `json:"date" binding:"required" example:"02/01/2025" time_format:"02/01/2006"`
 	Duration    int       `json:"duration" binding:"required" example:"2"`
 	Address     string    `json:"address" binding:"required" example:"Rue de la Paix 1, 1000 Lausanne"`
 	IsRemote    bool      `json:"is_remote" example:"true" binding:"required"`

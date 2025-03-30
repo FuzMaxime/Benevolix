@@ -45,11 +45,12 @@ func New(configuration *config.Config) *AnnonceConfig {
 func (config *AnnonceConfig) CreateAnnonceHandler(w http.ResponseWriter, r *http.Request) {
 	req := &model.AnnonceRequest{}
 	if err := render.Bind(r, req); err != nil {
-		render.JSON(w, r, map[string]string{"error": "Invalid Annonce creation request loaded"})
+		println(err.Error())
+		render.JSON(w, r, map[string]string{"error": err.Error()})
 		return
 	}
 	var tags []dbmodel.TagEntry
-	if req.Tags != nil && len(req.Tags) != 0 {
+	if len(req.Tags) != 0 {
 		// Check if tags exist in the database before creating the annonce
 		for _, tagId := range req.Tags {
 			tag, err := config.TagRepository.GetById(tagId)
