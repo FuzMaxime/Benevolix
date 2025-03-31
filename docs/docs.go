@@ -1000,6 +1000,9 @@ const docTemplate = `{
                 "uniqueConstraint": {
                     "type": "string"
                 },
+                "user": {
+                    "$ref": "#/definitions/dbmodel.UserEntry"
+                },
                 "user_id": {
                     "type": "integer"
                 }
@@ -1191,6 +1194,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user": {
+                    "$ref": "#/definitions/model.UserResponse"
+                },
+                "userid": {
                     "type": "integer"
                 }
             }
