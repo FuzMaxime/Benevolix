@@ -11,7 +11,6 @@ import (
 type CandidatureEntry struct {
 	gorm.Model `swaggerignore:"true"` // Ignore gorm.Model pour Swagger
 	UserID     uint                   `json:"user_id" gorm:"not null"`
-	User       UserEntry              `json:"user"`
 	AnnonceID  uint                   `json:"annonce_id" gorm:"not null"`
 	Date       time.Time              `json:"date" gorm:"not null"`
 	Status     string                 `json:"status" gorm:"not null"`
@@ -23,7 +22,6 @@ func (candidature *CandidatureEntry) ToModel() *model.CandidatureResponse {
 	return &model.CandidatureResponse{
 		ID:      candidature.ID,
 		UserID:  candidature.UserID,
-		User:    *candidature.User.ToModel(),
 		Annonce: candidature.AnnonceID,
 		Date:    candidature.Date,
 		Status:  candidature.Status,
@@ -48,13 +46,6 @@ func NewCandidatureRepository(db *gorm.DB) CandidatureRepository {
 }
 
 func (r *candidatureRepository) Create(entry *CandidatureEntry) (*CandidatureEntry, error) {
-	if entry.UserID != 0 {
-		var user UserEntry
-		if err := r.db.First(&user, entry.UserID).Error; err != nil {
-			return nil, err
-		}
-		entry.User = user
-	}
 
 	if err := r.db.Create(entry).Error; err != nil {
 		return nil, err
@@ -64,7 +55,7 @@ func (r *candidatureRepository) Create(entry *CandidatureEntry) (*CandidatureEnt
 
 func (r *candidatureRepository) GetAll() ([]*CandidatureEntry, error) {
 	var entries []*CandidatureEntry
-	if err := r.db.Preload("User").Find(&entries).Error; err != nil {
+	if err := r.db.Find(&entries).Error; err != nil {
 		return nil, err
 	}
 	return entries, nil
@@ -72,7 +63,7 @@ func (r *candidatureRepository) GetAll() ([]*CandidatureEntry, error) {
 
 func (r *candidatureRepository) GetById(id uint) (*CandidatureEntry, error) {
 	var entry *CandidatureEntry
-	if err := r.db.Preload("User").First(&entry, id).Error; err != nil {
+	if err := r.db.First(&entry, id).Error; err != nil {
 		return nil, err
 	}
 	return entry, nil

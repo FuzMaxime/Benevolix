@@ -98,7 +98,7 @@ func (r *annonceRepository) Create(entry *AnnonceEntry) (*AnnonceEntry, error) {
 
 func (r *annonceRepository) GetAll() ([]*AnnonceEntry, error) {
 	var entries []*AnnonceEntry
-	if err := r.db.Preload("Tags").Preload("Candidatures").Preload("Owner").Find(&entries).Error; err != nil {
+	if err := r.db.Preload("Tags").Preload("Candidature").Preload("Owner").Find(&entries).Error; err != nil {
 		return nil, err
 	}
 	return entries, nil
@@ -106,7 +106,7 @@ func (r *annonceRepository) GetAll() ([]*AnnonceEntry, error) {
 
 func (r *annonceRepository) GetById(id uint) (*AnnonceEntry, error) {
 	var entrie *AnnonceEntry
-	if err := r.db.Preload("Tags").Preload("Candidatures").Preload("Owner").First(&entrie, id).Error; err != nil {
+	if err := r.db.Preload("Tags").Preload("Candidature").Preload("Owner").First(&entrie, id).Error; err != nil {
 		return nil, err
 	}
 	return entrie, nil
