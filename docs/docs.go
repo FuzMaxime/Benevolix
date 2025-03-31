@@ -961,6 +961,9 @@ const docTemplate = `{
                     "type": "boolean",
                     "example": true
                 },
+                "owner": {
+                    "$ref": "#/definitions/dbmodel.UserEntry"
+                },
                 "owner_id": {
                     "type": "integer"
                 },
@@ -1129,6 +1132,9 @@ const docTemplate = `{
                 },
                 "is_remote": {
                     "type": "boolean"
+                },
+                "owner": {
+                    "$ref": "#/definitions/model.UserResponse"
                 },
                 "owner_id": {
                     "type": "integer"

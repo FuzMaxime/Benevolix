@@ -10,6 +10,7 @@ import (
 type AnnonceEntry struct {
 	gorm.Model `swaggerignore:"true"` // Ignore gorm.Model pour Swagger
 
+	Owner       UserEntry
 	OwnerID     uint               `json:"owner_id" gorm:"not null"`
 	Title       string             `json:"title" gorm:"not null" example:"Titre de l'annonce"`
 	Description string             `json:"description" example:"Description de l'annonce"`
@@ -43,6 +44,7 @@ func (annonce *AnnonceEntry) ToModel() *model.AnnonceResponse {
 	return &model.AnnonceResponse{
 		ID:           annonce.ID,
 		OwnerID:      annonce.OwnerID,
+		Owner:        *annonce.Owner.ToModel(),
 		Title:        annonce.Title,
 		Description:  annonce.Description,
 		Date:         annonce.Date,
@@ -79,6 +81,14 @@ func (r *annonceRepository) Create(entry *AnnonceEntry) (*AnnonceEntry, error) {
 		entry.Tags = tags
 	}
 
+	if entry.OwnerID != 0 {
+		var owner UserEntry
+		if err := r.db.First(&owner, entry.OwnerID).Error; err != nil {
+			return nil, err
+		}
+		entry.Owner = owner
+	}
+
 	if err := r.db.Create(entry).Error; err != nil {
 		return nil, err
 	}
@@ -88,7 +98,7 @@ func (r *annonceRepository) Create(entry *AnnonceEntry) (*AnnonceEntry, error) {
 
 func (r *annonceRepository) GetAll() ([]*AnnonceEntry, error) {
 	var entries []*AnnonceEntry
-	if err := r.db.Preload("Tags").Preload("Candidature").Find(&entries).Error; err != nil {
+	if err := r.db.Preload("Tags").Preload("Candidature").Preload("Owner").Find(&entries).Error; err != nil {
 		return nil, err
 	}
 	return entries, nil
@@ -96,7 +106,7 @@ func (r *annonceRepository) GetAll() ([]*AnnonceEntry, error) {
 
 func (r *annonceRepository) GetById(id uint) (*AnnonceEntry, error) {
 	var entrie *AnnonceEntry
-	if err := r.db.First(&entrie, id).Error; err != nil {
+	if err := r.db.Preload("Tags").Preload("Candidature").Preload("Owner").First(&entrie, id).Error; err != nil {
 		return nil, err
 	}
 	return entrie, nil

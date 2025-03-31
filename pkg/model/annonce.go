@@ -41,14 +41,15 @@ func (a *AnnonceRequest) Bind(r *http.Request) error {
 }
 
 type AnnonceResponse struct {
-	ID          uint      `json:"id"`
-	OwnerID     uint      `json:"owner_id"`
-	Title       string    `json:"title"`
-	Description string    `json:"description"`
-	Date        time.Time `json:"date"`
-	Duration    int       `json:"duration"`
-	Address     string    `json:"address"`
-	IsRemote    bool      `json:"is_remote"`
+	ID          uint         `json:"id"`
+	OwnerID     uint         `json:"owner_id"`
+	Owner       UserResponse `json:"owner"`
+	Title       string       `json:"title"`
+	Description string       `json:"description"`
+	Date        time.Time    `json:"date"`
+	Duration    int          `json:"duration"`
+	Address     string       `json:"address"`
+	IsRemote    bool         `json:"is_remote"`
 
 	Tags         []TagResponse         `json:"tags"`
 	Candidatures []CandidatureResponse `json:"candidatures"`
